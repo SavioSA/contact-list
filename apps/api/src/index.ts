@@ -1,9 +1,14 @@
 import * as express from 'express';
-import { customConnection } from "./database/dbConnection";
+import dbConnection from "./database/dbConnection";
 
 const app = express();
 
-customConnection(process.env.MYSQL_HOST)
+app.use(express.json());
+dbConnection.initialize().then(() => {
+  console.log('Database connected.');
+}).catch((error) => {
+  console.log(error);
+});
 
 app.get('/api', (req, res) => {
   res.send({ message: 'Welcomes to api!' });
