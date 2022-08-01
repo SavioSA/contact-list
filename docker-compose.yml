@@ -2,7 +2,6 @@ version: "3.9"
 services:
   mysql:
     image: mysql:5.7
-    hostname: mysql
     healthcheck:
       test:
         [
@@ -16,11 +15,12 @@ services:
       timeout: 20s
       retries: 10
     ports:
-      - "3307:3306"
+      - "${MYSQL_PORT}:${MYSQL_PORT}"
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_TCP_PORT= ${MYSQL_PORT}
 
   front:
     build:
@@ -30,10 +30,12 @@ services:
       - "4200:4200"
 
   api:
-    image: node
+    command: "yarn run start api --host 0.0.0.0"
     build:
       context: .
       dockerfile: ./docker/api.dockerfile
+    volumes:
+      - ./apps/api:/app/apps/api
     env_file:
       - .env
     ports:
