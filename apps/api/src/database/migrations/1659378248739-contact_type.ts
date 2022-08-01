@@ -20,7 +20,10 @@ export class contactType1659378125005 implements MigrationInterface {
       }),
       true,
     );
-    }
+    // await queryRunner.query(
+    //   'INSERT INTO contact_type (type) VALUES (phone); INSERT INTO contact_type (type) VALUES (email);'
+    // );
+  }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     queryRunner.dropTable("contact_type");

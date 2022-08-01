@@ -11,6 +11,6 @@ export default class ContactType {
     @Column()
       type: string;
 
-    @ManyToOne(() => Contact, (contact) => contact.contactTypes)
+    @ManyToOne(() => Contact, (contact) => contact.contactType)
       contacts: Contact[];
 }

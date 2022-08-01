@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import ContactType from './contact-type.entity';
 import User from './user.entity';
 
@@ -13,8 +13,8 @@ export default class Contact {
     @Column()
       identifier: string;
 
-    @ManyToOne(() => ContactType, (contactType) => contactType.contacts)
-      contactTypes: ContactType[];
+    @OneToMany(() => ContactType, (contactType) => contactType.contacts)
+      contactType: ContactType;
 
     @ManyToOne(() => User, (user) => user.contacts)
       user: User;

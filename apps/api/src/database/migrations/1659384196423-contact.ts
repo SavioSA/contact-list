@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm";
 
-export class contactContactType1659378277215 implements MigrationInterface {
+export class contact1659384196423 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "contact-contact_types",
+        name: "contact",
         columns: [
           {
             name: "id",
@@ -13,12 +13,18 @@ export class contactContactType1659378277215 implements MigrationInterface {
             isPrimary: true,
           },
           {
-            name: "contact_id",
+            name: "identifier",
+            type: "varchar"
+          },
+          {
+            name: "user_id",
             type: "int",
+            isUnique: true
           },
           {
             name: "contact_type_id",
             type: "int",
+            isUnique: true
           },
           {
             name: "created_at",
@@ -29,24 +35,27 @@ export class contactContactType1659378277215 implements MigrationInterface {
       }),
       true,
     );
-    const contactForeignKey = new TableForeignKey({
-      columnNames: ["contact_id"],
+
+    const userForeignKey = new TableForeignKey({
+      columnNames: ["user_id"],
       referencedColumnNames: ["id"],
-      referencedTableName: "contact",
+      referencedTableName: "user",
       onDelete: "CASCADE"
     });
+
     const contactTypeForeignKey = new TableForeignKey({
       columnNames: ["contact_type_id"],
       referencedColumnNames: ["id"],
       referencedTableName: "contact_type",
       onDelete: "CASCADE"
     });
-    await queryRunner.createForeignKey("contact-contact_types", contactForeignKey);
-    await queryRunner.createForeignKey("contact-contact_types", contactTypeForeignKey);
+
+    await queryRunner.createForeignKey("contact", userForeignKey);
+    await queryRunner.createForeignKey("contact", contactTypeForeignKey);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    queryRunner.dropTable("contact-contact_types");
+    queryRunner.dropTable('contact');
   }
 
 }
