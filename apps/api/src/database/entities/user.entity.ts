@@ -9,6 +9,9 @@ export default class User {
     @Column()
       name: string;
 
+    @Column()
+      surname: string;
+
     @OneToMany(() => Contact, (contact) => contact.user)
       contacts: Contact[];
 }
