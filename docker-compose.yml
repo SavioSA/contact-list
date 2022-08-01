@@ -31,14 +31,14 @@ services:
     ports:
       - "4200:4200"
 
-  # api:
-  #   command: "yarn run start api --host 0.0.0.0"
-  #   build:
-  #     context: .
-  #     dockerfile: ./docker/api.dockerfile
-  #   volumes:
-  #     - ./apps/api:/app/apps/api
-  #   env_file:
-  #     - .env
-  #   ports:
-  #     - "3333:3333"
+  api:
+    command: "yarn run start api --host 0.0.0.0"
+    build:
+      context: .
+      dockerfile: ./docker/api.dockerfile
+    volumes:
+      - ./apps/api:/app/apps/api
+    env_file:
+      - .env
+    ports:
+      - "3333:3333"
