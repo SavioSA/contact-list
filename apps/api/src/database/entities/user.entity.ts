@@ -10,5 +10,5 @@ export default class User {
       name: string;
 
     @OneToMany(() => Contact, (contact) => contact.user)
-    contacts: Contact[]
+      contacts: Contact[];
 }

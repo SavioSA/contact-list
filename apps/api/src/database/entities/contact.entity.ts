@@ -10,5 +10,5 @@ export default class Contact {
       name: string;
 
     @ManyToOne(() => User, (user) => user.contacts)
-    user: User
+      user: User;
 }
