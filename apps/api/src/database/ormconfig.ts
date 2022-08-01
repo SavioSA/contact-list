@@ -14,8 +14,8 @@ export default function getConfig(host = process.env.MYSQL_MIGRATION_HOST) {
     logging: false,
     synchronize: false,
     name: 'default',
-    entities: ['apps/api/src/database/entities/**.entity{.ts}'],
-    migrations: ['apps/api/src/database/migrations/*.ts'],
+    entities: ['apps/api/src/database/entities/**.entity.{ts}'],
+    migrations: ['apps/api/src/database/migrations/*.{ts}'],
     subscribers: ['src/database/subscriber/**/*{.ts}'],
   } as DataSourceOptions;
 }

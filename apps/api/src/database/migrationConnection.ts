@@ -9,8 +9,5 @@ const datasource = new DataSource(getConfig(host));
   return datasource
 }
 
-
-
-export const dbConnection = connect(process.env.MYSQL_HOST)
-
-export default dbConnection;
+const migrationConnection = connect(process.env.MYSQL_MIGRATION_HOST)
+export default migrationConnection;
