@@ -7,7 +7,12 @@
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2020 browser module main",
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "migration:generate": "./node_modules/.bin/ts-node ./node_modules/.bin/typeorm migration:generate -d src/database/dbConnection.ts",
+    "migration:up": "./node_modules/.bin/ts-node ./node_modules/.bin/typeorm migration:run -d apps/api/src/database/dbConnection.ts",
+    "migration:down": "./node_modules/.bin/ts-node ./node_modules/.bin/typeorm migration:revert -d apps/api/src/database/dbConnection.ts",
+    "migration:create": "./node_modules/.bin/ts-node ./node_modules/.bin/typeorm migration:create"
   },
   "private": true,
   "dependencies": {
@@ -20,9 +25,12 @@
     "@angular/platform-browser-dynamic": "~14.0.0",
     "@angular/router": "~14.0.0",
     "@nrwl/angular": "14.4.3",
+    "dotenv": "^16.0.1",
     "express": "4.17.2",
+    "mysql2": "^2.3.3",
     "rxjs": "~7.4.0",
     "tslib": "^2.0.0",
+    "typeorm": "^0.3.7",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
