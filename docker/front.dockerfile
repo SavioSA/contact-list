@@ -4,7 +4,7 @@ WORKDIR "/app"
 
 RUN yarn global add typescript
 
-COPY ./package.json ./
+COPY ./package.json ./package.json
 
 COPY ./decorate-angular-cli.js ./decorate-angular-cli.js
 
@@ -16,8 +16,7 @@ COPY ./tsconfig.base.json ./tsconfig.base.json
 
 COPY ./apps/api/project.json ./apps/api/project.json
 
-COPY ./apps/contact-list/ ./apps/contact-list/
-
+COPY ./nx.json ./nx.json
 
 RUN yarn install
 
