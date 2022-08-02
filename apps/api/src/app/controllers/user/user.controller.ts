@@ -3,6 +3,8 @@ import { body, oneOf, validationResult } from 'express-validator';
 import dbConnection from '../../../database/dbConnection';
 import User from '../../../database/entities/user.entity';
 import MessageInterface from '../../interfaces/message.interface';
+import { PaginationInterface } from './interfaces/pagination.interface';
+import UserPaginationInterface from './interfaces/user-paginate.interface';
 import UserInterface from './interfaces/user.interface';
 const router: Router = Router();
 const userRepository = dbConnection.getRepository('User');
@@ -136,11 +138,34 @@ router.put<unknown, MessageInterface, UserInterface, unknown>('/',
         })
       }
     } catch (error) {
-        console.error(error);
-        res.status(500).send({
-          msg: 'There was an error editing the contact.'
-        })
-      }
+      console.error(error);
+      res.status(500).send({
+        msg: 'There was an error editing the contact.'
+      })
+    }
+  });
+
+router.get<unknown, UserPaginationInterface | MessageInterface, unknown, PaginationInterface>('/', async (req, res) => {
+  try {
+    const { offset, page } = req.query;
+    const take: number = !offset ? 0 : offset;
+    let currentPage: number = !page ? 0 : page;
+    currentPage = currentPage > 0 ? currentPage - 1 : currentPage;
+    const itensPerPage = currentPage * take;
+
+    const usersSearch = await userRepository.findAndCount({
+      take,
+      skip: itensPerPage,
+    });
+
+    const users = usersSearch[0] as unknown as UserInterface[];
+    const usersTotalCount: number = usersSearch[1];
+    const pagesQuantity: number = Math.ceil(usersTotalCount / (offset || usersTotalCount));
+
+    res.status(200).json({ users, pagesQuantity });
+  } catch (error) {
+    res.status(500).json({ msg: `There was an error with your request: ${error}` });
+  }
   })
 
 const UserController: Router = router;
