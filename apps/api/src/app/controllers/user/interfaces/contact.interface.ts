@@ -1,5 +1,5 @@
 export default interface ContactInterface {
   identifier: string;
-  contactTypeId: string;
+  contactTypeId: number;
   isWhatsapp: boolean;
 }

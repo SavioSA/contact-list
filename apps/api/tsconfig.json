@@ -2,9 +2,6 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "paths": {
-      "@shared/interfaces":["../../libs/shared/interfaces/index.ts"]
-    }
   },
   "files": [],
   "include": [],
