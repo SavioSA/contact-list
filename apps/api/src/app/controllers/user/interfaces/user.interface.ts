@@ -1,4 +1,4 @@
-import ContactInterface from './contact.interface';
+import ContactInterface from '../../../interfaces/contact.interface';
 
 export default interface UserInterface {
   id?: number;
