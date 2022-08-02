@@ -169,6 +169,7 @@ router.get<{ id: number }, UserInterface | MessageInterface, unknown, unknown>('
     const { id } = req.params;
     const user = await userRepository.findOne({
       where: { id },
+      relations: ['contacts']
     });
     if (user) {
       res.status(200).json(user as UserInterface);
