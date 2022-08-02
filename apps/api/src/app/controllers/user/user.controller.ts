@@ -44,9 +44,6 @@ router.post<unknown, UserInterface | MessageInterface, UserInterface, unknown>('
       const alreadyRegisteredContacts = []
       const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
       for (const contact of receivedContacts) {
-        console.log(emailRegex.test(contact.identifier));
-        console.log(emailRegex.test(contact.identifier));
-
         if (contact.contactTypeId === 1 && emailRegex.test(contact.identifier)) {
           res.status(403).json({
             msg: "You tried to register an email as a phone."
@@ -105,12 +102,46 @@ router.post<unknown, UserInterface | MessageInterface, UserInterface, unknown>('
     }
 
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).send({
       msg: 'There was an error registering the contact.'
     })
   }
-});
+  });
+
+router.put<unknown, MessageInterface, UserInterface, unknown>('/',
+  body('id').isNumeric().withMessage('id must be a number.'),
+  body('name').isLength({ min: 3, max: 100 }).optional().withMessage('name must have beetwen 3 and 100 characters.'),
+  body('name').isString().optional().withMessage('name must be a string.'),
+  body('surname').isLength({ min: 3, max: 100 }).optional().withMessage('surname must have beetwen 3 and 100 characters.'),
+  body('surname').isString().optional().withMessage('name must be a string.'),
+  async (req, res) => {
+    try {
+      const { id, name, surname } = req.body;
+      const user = await userRepository.findOne({
+        where: {
+          id
+        }
+      })
+      if (!user) {
+        res.status(404).send({
+          msg: 'User not found.'
+        })
+      } else {
+        user.name = name || user.name
+        user.surname = surname || user.surname
+        await userRepository.update({ id }, user);
+        res.json({
+          msg: "User edited successfully."
+        })
+      }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({
+          msg: 'There was an error editing the contact.'
+        })
+      }
+  })
 
 const UserController: Router = router;
 export default UserController;
