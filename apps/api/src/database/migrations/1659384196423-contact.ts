@@ -21,7 +21,6 @@ export class contact1659384196423 implements MigrationInterface {
           {
             name: "user_id",
             type: "int",
-            isUnique: true
           },
           {
             name: "is_whatsapp",
@@ -30,7 +29,6 @@ export class contact1659384196423 implements MigrationInterface {
           {
             name: "contact_type_id",
             type: "int",
-            isUnique: true
           },
           {
             name: "created_at",

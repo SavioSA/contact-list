@@ -4,8 +4,6 @@ import { DataSourceOptions } from 'typeorm';
 
 dotenv.config({ path: './.env' });
 
-console.log(join(__dirname,'../../../../dist/apps/api/src/database/migrations/**{.ts, .js}'));
-
 export default function getConfig(host = process.env.MYSQL_MIGRATION_HOST) {
   return {
     type: 'mysql',
