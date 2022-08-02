@@ -4,7 +4,7 @@ import dbConnection from '../../../database/dbConnection';
 import User from '../../../database/entities/user.entity';
 import MessageInterface from '../../interfaces/message.interface';
 import { PaginationInterface } from './interfaces/pagination.interface';
-import UserPaginationInterface from './interfaces/user-paginate.interface';
+import UserPaginationInterface from './interfaces/user-pagination.interface';
 import UserInterface from './interfaces/user.interface';
 const router: Router = Router();
 const userRepository = dbConnection.getRepository('User');
