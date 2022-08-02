@@ -105,9 +105,7 @@ router.post<unknown, UserInterface | MessageInterface, UserInterface, unknown>('
 
   } catch (error) {
     console.error(error);
-    res.status(500).send({
-      msg: 'There was an error registering the contact.'
-    })
+    res.status(500).json({ msg: `There was an error with your request: ${error}`});
   }
   });
 
@@ -139,9 +137,7 @@ router.put<unknown, MessageInterface, UserInterface, unknown>('/',
       }
     } catch (error) {
       console.error(error);
-      res.status(500).send({
-        msg: 'There was an error editing the contact.'
-      })
+      res.status(500).json({ msg: `There was an error with your request: ${error}`});
     }
   });
 
@@ -166,7 +162,23 @@ router.get<unknown, UserPaginationInterface | MessageInterface, unknown, Paginat
   } catch (error) {
     res.status(500).json({ msg: `There was an error with your request: ${error}` });
   }
-  })
+});
+
+router.get<{ id: number }, UserInterface | MessageInterface, unknown, unknown>('/:id', async(req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await userRepository.findOne({
+      where: { id },
+    });
+    if (user) {
+      res.status(200).json(user as UserInterface);
+    } else {
+      res.status(404).json({ msg: 'There was an error with your request: User not found.' });
+    }
+  } catch (error) {
+    res.status(500).json({ msg: `There was an error with your request: ${error}` });
+  }
+})
 
 const UserController: Router = router;
 export default UserController;
