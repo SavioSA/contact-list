@@ -167,6 +167,23 @@ router.get< { id: number }, ContactInterface | MessageInterface, unknown, unknow
   }
 });
 
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const contactExists = await contactRepository.findOne({
+      where: { id },
+    });
+    if (!contactExists) {
+      res.status(404).json({ msg: 'There was an error with your request: contact not found.' });
+    } else {
+      await contactRepository.delete({ id });
+      res.status(200).json({ msg: 'Contact deleted successfully.' });
+    }
+  } catch (error) {
+    res.status(500).json({ msg: `There was an error with your request: ${error}` });
+  }
+})
+
 
 
 
