@@ -151,6 +151,22 @@ router.get<unknown, ContactPaginationInterface | MessageInterface, unknown, Pagi
   }
 });
 
+router.get< { id: number }, ContactInterface | MessageInterface, unknown, unknown >('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const contact = await contactRepository.findOne({
+      where: { id },
+    });
+    if (contact) {
+      res.status(200).json(contact as ContactInterface);
+    } else {
+      res.status(404).json({ msg: 'There was an error with your request: Contact not found.' });
+    }
+  } catch (error) {
+    res.status(500).json({ msg: `There was an error with your request: ${error}` });
+  }
+});
+
 
 
 
