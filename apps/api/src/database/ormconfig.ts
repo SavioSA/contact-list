@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv';
+import { join, resolve } from 'path';
 import { DataSourceOptions } from 'typeorm';
 
 dotenv.config({ path: './.env' });
@@ -14,8 +15,8 @@ export default function getConfig(host = process.env.MYSQL_MIGRATION_HOST) {
     logging: false,
     synchronize: false,
     name: 'default',
-    entities: ['apps/api/src/database/entities/**.entity.{.ts, .js}'],
-    migrations: ['apps/api/src/database/migrations/*.{.ts, .js}'],
-    subscribers: ['src/database/subscriber/**/*{.ts, .js}'],
+    entities: [resolve(__dirname + '/../../database/entities/*.entity.js')],
+    migrations: [join(__dirname,'../../../../dist/database/migrations/**{.ts, .js}')],
+    subscribers: ['dist/src/database/subscriber/**'],
   } as DataSourceOptions;
 }
