@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import ContactType from './contact-type.entity';
 import User from './user.entity';
 
@@ -10,9 +10,18 @@ export default class Contact {
     @Column()
       identifier: string;
 
-    @OneToMany(() => ContactType, (contactType) => contactType.contacts)
+    @Column({name: 'is_whatsapp'})
+      isWhatsapp: string;
+
+    @Column({name: 'user_id'})
+      userId: string;
+
+    @Column({name: 'contact_type_id'})
+      contactTypeId: string;
+
+    @OneToMany(() => ContactType, (contactType) => contactType.id)
       contactType: ContactType;
 
-    @ManyToOne(() => User, (user) => user.contacts)
+    @OneToMany(() => User, (user) => user.id)
       user: User;
 }
