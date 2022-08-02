@@ -180,5 +180,22 @@ router.get<{ id: number }, UserInterface | MessageInterface, unknown, unknown>('
   }
 })
 
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userExists = await userRepository.findOne({
+      where: { id },
+    });
+    if (!userExists) {
+      res.status(404).json({ msg: 'There was an error with your request: User not found.' });
+    } else {
+      await userRepository.delete({ id });
+      res.status(200).json({ msg: 'User deleted successfully.' });
+    }
+  } catch (error) {
+    res.status(500).json({ msg: `There was an error with your request: ${error}` });
+  }
+})
+
 const UserController: Router = router;
 export default UserController;
