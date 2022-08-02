@@ -4,6 +4,8 @@ import dbConnection from '../../../database/dbConnection';
 import Contact from '../../../database/entities/contact.entity';
 import ContactInterface from '../../interfaces/contact.interface';
 import MessageInterface from '../../interfaces/message.interface';
+import { PaginationInterface } from '../../interfaces/pagination.interface';
+import ContactPaginationInterface from './contact-pagination.interface';
 const router: Router = Router();
 const contactRepository = dbConnection.getRepository('Contact');
 
@@ -125,6 +127,31 @@ router.post<unknown, ContactInterface | MessageInterface, ContactInterface, unkn
       res.status(500).json({ msg: `There was an error with your request: ${error}`});
     }
   });
+
+router.get<unknown, ContactPaginationInterface | MessageInterface, unknown, PaginationInterface>('/', async (req, res) => {
+  try {
+    const { offset, page } = req.query;
+    const take: number = !offset ? 0 : offset;
+    let currentPage: number = !page ? 0 : page;
+    currentPage = currentPage > 0 ? currentPage - 1 : currentPage;
+    const itensPerPage = currentPage * take;
+
+    const contactsSearch = await contactRepository.findAndCount({
+      take,
+      skip: itensPerPage,
+    });
+
+    const contacts = contactsSearch[0] as unknown as ContactInterface[];
+    const contactsTotalCount: number = contactsSearch[1];
+    const pagesQuantity: number = Math.ceil(contactsTotalCount / (offset || contactsTotalCount));
+
+    res.status(200).json({ contacts, pagesQuantity });
+  } catch (error) {
+    res.status(500).json({ msg: `There was an error with your request: ${error}` });
+  }
+});
+
+
 
 
 const ContactController: Router = router;
