@@ -19,42 +19,41 @@ function setErrorValidationMessage(errors: { msg: string } []) {
   return `There was an error with your request:${errorMessage}`;
 }
 
+function validatedContactBusinessRules(contact: ContactInterface) {
+  const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
+  if (contact.contactTypeId === 1 && emailRegex.test(contact.identifier)) {
+   return {
+      msg: "You tried to register an email as a phone."
+    }
+  }
+  if (contact.contactTypeId === 2 && parseInt(contact.identifier)) {
+    return {
+      msg: "You tried to register a phone as an email."
+    }
+  }
+  if (contact.contactTypeId === 2 && contact.isWhatsapp) {
+    return {
+      msg: "Whatsapp is allowed only to phone contacts."
+    }
+  }
+}
+
 router.post<unknown, ContactInterface | MessageInterface, ContactInterface, unknown>('/',
-  body('contacts.*.isWhatsapp').isBoolean().withMessage('isWhatsapp must be a boolean.'),
+  body('isWhatsapp').isBoolean().withMessage('isWhatsapp must be a boolean.'),
   oneOf([
-    body('contacts.*.identifier').isString().isLength({max: 11, min: 11}).withMessage('Invalid phone number.'),
-    body('contacts.*.identifier').isString().isEmail().withMessage('Invalid Email.'),
+    body('identifier').isString().isLength({max: 11, min: 11}).withMessage('Invalid phone number.'),
+    body('identifier').isString().isEmail().withMessage('Invalid Email.'),
   ], "Verify your contacts, at leat one is invalid."),
   async (req, res) => {
     try {
       const errors = validationResult(req);
       const contact = req.body;
       if (errors.isEmpty()) {
-          const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
-          if (contact.contactTypeId === 1 && emailRegex.test(contact.identifier)) {
-            res.status(403).json({
-              msg: "You tried to register an email as a phone."
-            })
-            return
+        const contactAlreadyExist = await contactRepository.findOne({
+          where: {
+            identifier: contact.identifier
           }
-          if (contact.contactTypeId === 2 && parseInt(contact.identifier)) {
-            res.status(403).json({
-              msg: "You tried to register a phone as an email."
-            })
-            return
-          }
-        if (contact.contactTypeId === 2 && contact.isWhatsapp) {
-
-            res.status(403).json({
-              msg: "Whatsapp is allowed only to phone contacts."
-            })
-            return
-          }
-            const contactAlreadyExist = await contactRepository.findOne({
-              where: {
-                identifier: contact.identifier
-              }
-            })
+        })
         if (contactAlreadyExist) {
           res.status(409).json({
             msg: "Contact alredy exists."
@@ -65,6 +64,11 @@ router.post<unknown, ContactInterface | MessageInterface, ContactInterface, unkn
         newContact.identifier = contact.identifier;
         newContact.isWhatsapp = contact.isWhatsapp;
         newContact.contactTypeId = contact.contactTypeId;
+        const isNotValid = validatedContactBusinessRules(contact);
+        if (isNotValid) {
+          res.status(403).json(isNotValid);
+          return
+        }
         const result = await contactRepository.save({ ...newContact, userId: contact.userId });
         res.json(result as ContactInterface);
       } else {
@@ -76,6 +80,50 @@ router.post<unknown, ContactInterface | MessageInterface, ContactInterface, unkn
     console.error(error);
     res.status(500).json({ msg: `There was an error with your request: ${error}`});
   }
+  });
+
+  router.put<unknown, MessageInterface, ContactInterface, unknown>('/',
+  body('isWhatsapp').isBoolean().withMessage('isWhatsapp must be a boolean.').optional(),
+  oneOf([
+    body('identifier').isString().isLength({max: 11, min: 11}).withMessage('Invalid phone number.'),
+    body('identifier').isString().isEmail().withMessage('Invalid Email.'),
+  ], "Contact invalid, please verify.",),
+  async (req, res) => {
+    try {
+      const errors = validationResult(req);
+      if (errors.isEmpty()) {
+        const { id , identifier, isWhatsapp} = req.body;
+        const contact = await contactRepository.findOne({
+          where: {
+            id
+          }
+        })
+        if (!contact) {
+          res.status(404).send({
+            msg: 'Contact not found.'
+          })
+        } else {
+          contact.identifier = identifier || contact.identifier
+          contact.isWhatsapp = isWhatsapp || contact.isWhatsapp
+          const isNotValid = validatedContactBusinessRules(contact as ContactInterface);
+          if (isNotValid) {
+            res.status(403).json(isNotValid);
+            return
+          }
+          await contactRepository.update({ id }, contact);
+          res.json({
+            msg: "Contact updated successfully."
+          })
+        }
+      } else {
+        const errorMessage = setErrorValidationMessage(errors.array());
+        res.status(403).json({ msg: errorMessage })
+      }
+
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ msg: `There was an error with your request: ${error}`});
+    }
   });
 
 

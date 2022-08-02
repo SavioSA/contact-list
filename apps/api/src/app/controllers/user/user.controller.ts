@@ -33,7 +33,7 @@ router.post<unknown, UserInterface | MessageInterface, UserInterface, unknown>('
   oneOf([
     body('contacts.*.identifier').isString().isLength({max: 11, min: 11}).withMessage('Invalid phone number.'),
     body('contacts.*.identifier').isString().isEmail().withMessage('Invalid Email.'),
-  ], "Verify your contacts, at leat one is invalid."),
+  ], "Verify your contacts, at least one is invalid."),
   async (req, res) => {
     try {
       const errors = validationResult(req);
@@ -117,24 +117,31 @@ router.put<unknown, MessageInterface, UserInterface, unknown>('/',
   body('surname').isString().optional().withMessage('name must be a string.'),
   async (req, res) => {
     try {
-      const { id, name, surname } = req.body;
-      const user = await userRepository.findOne({
-        where: {
-          id
+      const errors = validationResult(req);
+        if (errors.isEmpty()) {
+        const { id, name, surname } = req.body;
+        const user = await userRepository.findOne({
+          where: {
+            id
+          }
+        })
+        if (!user) {
+          res.status(404).send({
+            msg: 'User not found.'
+          })
+        } else {
+          user.name = name || user.name
+          user.surname = surname || user.surname
+          await userRepository.update({ id }, user);
+          res.json({
+            msg: "User updated successfully."
+          })
         }
-      })
-      if (!user) {
-        res.status(404).send({
-          msg: 'User not found.'
-        })
-      } else {
-        user.name = name || user.name
-        user.surname = surname || user.surname
-        await userRepository.update({ id }, user);
-        res.json({
-          msg: "User edited successfully."
-        })
+        } else {
+        const errorMessage = setErrorValidationMessage(errors.array());
+        res.status(403).json({ msg: errorMessage })
       }
+
     } catch (error) {
       console.error(error);
       res.status(500).json({ msg: `There was an error with your request: ${error}`});
