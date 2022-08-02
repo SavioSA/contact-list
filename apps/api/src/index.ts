@@ -1,4 +1,5 @@
 import * as express from 'express';
+import UserController from './app/controllers/user.controller';
 import dbConnection from "./database/dbConnection";
 
 const app = express();
@@ -9,6 +10,8 @@ dbConnection.initialize().then(() => {
 }).catch((error) => {
   console.log(error);
 });
+
+app.use('/api/v1/user', UserController);
 
 app.get('/api', (req, res) => {
   res.send({ message: 'Welcomes to api!' });

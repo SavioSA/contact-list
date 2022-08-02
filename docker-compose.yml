@@ -38,7 +38,7 @@ services:
       dockerfile: ./docker/api.dockerfile
     volumes:
       - ./apps/api:/app/apps/api
-      - ./dist:/app/dist
+      - ./dist:/app/dist/
     env_file:
       - .env
     ports:

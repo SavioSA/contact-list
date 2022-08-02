@@ -4,6 +4,8 @@ import { DataSourceOptions } from 'typeorm';
 
 dotenv.config({ path: './.env' });
 
+console.log(join(__dirname,'../../../../dist/apps/api/src/database/migrations/**{.ts, .js}'));
+
 export default function getConfig(host = process.env.MYSQL_MIGRATION_HOST) {
   return {
     type: 'mysql',
@@ -15,8 +17,8 @@ export default function getConfig(host = process.env.MYSQL_MIGRATION_HOST) {
     logging: false,
     synchronize: false,
     name: 'default',
-    entities: [resolve(__dirname + '/../../database/entities/*.entity.js')],
-    migrations: [join(__dirname,'../../../../dist/database/migrations/**{.ts, .js}')],
+    entities: [resolve(join(__dirname)+'/entities/*.js')],
+    migrations: [join(__dirname,'../../../../dist/apps/api/src/database/migrations/**')],
     subscribers: ['dist/src/database/subscriber/**'],
   } as DataSourceOptions;
 }
