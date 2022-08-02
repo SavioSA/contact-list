@@ -11,10 +11,10 @@ export default class Contact {
       identifier: string;
 
     @Column({name: 'is_whatsapp'})
-      isWhatsapp: string;
+      isWhatsapp: boolean;
 
     @Column({name: 'contact_type_id'})
-      contactTypeId: string;
+      contactTypeId: number;
 
     @OneToOne(() => ContactType, (contactType) => contactType.contacts)
       contactType: ContactType;

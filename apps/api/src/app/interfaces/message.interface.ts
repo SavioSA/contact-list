@@ -1,3 +1,3 @@
-export default interface ContactInterface {
+export default interface MessageInterface {
   msg: string;
 }
