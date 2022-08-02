@@ -8,9 +8,6 @@ export default class Contact {
       id: number;
 
     @Column()
-      type: string;
-
-    @Column()
       identifier: string;
 
     @OneToMany(() => ContactType, (contactType) => contactType.contacts)
