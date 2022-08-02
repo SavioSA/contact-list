@@ -11,6 +11,8 @@ export class contactType1659378125005 implements MigrationInterface {
             name: "id",
             type: "int",
             isPrimary: true,
+            isGenerated: true,
+            generationStrategy: 'increment'
           },
           {
             name: "type",
@@ -20,9 +22,12 @@ export class contactType1659378125005 implements MigrationInterface {
       }),
       true,
     );
-    // await queryRunner.query(
-    //   'INSERT INTO contact_type (type) VALUES (phone); INSERT INTO contact_type (type) VALUES (email);'
-    // );
+    await queryRunner.query(
+      'INSERT INTO contact_type(type) VALUES("phone");'
+    );
+    await queryRunner.query(
+      'INSERT INTO contact_type(type) VALUES("email");'
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

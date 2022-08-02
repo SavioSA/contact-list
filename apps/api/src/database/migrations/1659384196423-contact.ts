@@ -11,6 +11,8 @@ export class contact1659384196423 implements MigrationInterface {
             name: "id",
             type: "int",
             isPrimary: true,
+            isGenerated: true,
+            generationStrategy: 'increment'
           },
           {
             name: "identifier",
@@ -20,6 +22,10 @@ export class contact1659384196423 implements MigrationInterface {
             name: "user_id",
             type: "int",
             isUnique: true
+          },
+          {
+            name: "is_whatsapp",
+            type: "boolean"
           },
           {
             name: "contact_type_id",
