@@ -1,5 +1,5 @@
 import * as express from 'express';
-import UserController from './app/controllers/user.controller';
+import UserController from './app/controllers/user/user.controller';
 import dbConnection from "./database/dbConnection";
 
 const app = express();
