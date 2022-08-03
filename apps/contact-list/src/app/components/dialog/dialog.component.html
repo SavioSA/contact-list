@@ -6,18 +6,18 @@
       <mat-form-field appearance="fill">
         <mat-label>Tipo de Contato</mat-label>
         <mat-select formControlName="type">
-          <mat-option  *ngFor="let type of [{value:1, viewValue: 1 }]" [value]="type.value">
-            {{type.viewValue}}
+          <mat-option  *ngFor="let type of data.contactTypes" [value]="type.id">
+            {{type.type}}
           </mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field *ngIf="data.formData?.value?.type === 2" appearance="outline">
         <mat-label>Email</mat-label>
-        <input formControlName="email" matInput placeholder="Placeholder">
+        <input formControlName="email" matInput placeholder="Email">
       </mat-form-field>
       <mat-form-field *ngIf="data.formData?.value?.type === 1" appearance="outline">
         <mat-label>Telefone</mat-label>
-        <input formControlName="phone" matInput maxlength="11" (keypress)="isNumber($event)" placeholder="Placeholder">
+        <input formControlName="phone" matInput maxlength="11" (keypress)="isNumber($event)" placeholder="Telefone">
       </mat-form-field>
       <section class="whatsapp-check-container" *ngIf="data.formData?.value?.type === 1">
         <mat-checkbox  formControlName="isWhatsapp" class="example-margin">Whatsapp</mat-checkbox>

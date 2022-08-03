@@ -23,10 +23,10 @@ export class contactType1659378125005 implements MigrationInterface {
       true,
     );
     await queryRunner.query(
-      'INSERT INTO contact_type(type) VALUES("phone");'
+      'INSERT INTO contact_type(type) VALUES("Telefone");'
     );
     await queryRunner.query(
-      'INSERT INTO contact_type(type) VALUES("email");'
+      'INSERT INTO contact_type(type) VALUES("Email");'
     );
   }
 
