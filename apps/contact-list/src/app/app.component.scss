@@ -11,4 +11,12 @@ section.main{
     padding-bottom: 2rem;
     width: 100%;
   }
+  mat-card{
+    display: flex;
+    justify-content: center;
+    width: 60%;
+  }
+  h3{
+  color:#81a1b3;
+  }
 }
