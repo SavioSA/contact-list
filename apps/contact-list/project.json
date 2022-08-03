@@ -5,7 +5,9 @@
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/contact-list",
         "index": "apps/contact-list/src/index.html",
@@ -17,7 +19,10 @@
           "apps/contact-list/src/favicon.ico",
           "apps/contact-list/src/assets"
         ],
-        "styles": ["apps/contact-list/src/styles.scss"],
+        "styles": [
+          "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
+          "apps/contact-list/src/styles.scss"
+        ],
         "scripts": []
       },
       "configurations": {
@@ -85,7 +90,9 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/contact-list"],
+      "outputs": [
+        "coverage/apps/contact-list"
+      ],
       "options": {
         "jestConfig": "apps/contact-list/jest.config.ts",
         "passWithNoTests": true
