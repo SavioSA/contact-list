@@ -1,0 +1,9 @@
+section.management-buttons{
+  width: 70%;
+  display: flex;
+  justify-content: space-around;
+  .new-contact-button{
+    background-color: #06ac06;
+    color: #fff;
+  }
+}
