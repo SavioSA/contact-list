@@ -5,7 +5,7 @@ import Contact from '../../../database/entities/contact.entity';
 import ContactInterface from '../../interfaces/contact.interface';
 import MessageInterface from '../../interfaces/message.interface';
 import { PaginationInterface } from '../../interfaces/pagination.interface';
-import ContactPaginationInterface from './contact-pagination.interface';
+import ContactPaginationInterface from './interfaces/contact-pagination.interface';
 const router: Router = Router();
 const contactRepository = dbConnection.getRepository('Contact');
 
