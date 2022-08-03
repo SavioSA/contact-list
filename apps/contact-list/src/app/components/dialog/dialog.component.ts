@@ -6,7 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./dialog.component.scss'],
 })
 export class DialogComponent {
-
+datemask = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -19,8 +19,16 @@ export class DialogComponent {
   onNoClick(): void {
   }
 
+  isNumber(evt: any) {
+    evt = (evt) ? evt : window.event;
+    const charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+  }
+
   submit() {
-    console.log(this.data?.formData?.value?.phone?.length);
     this.dialogRef.close({validated: true});
   }
 }

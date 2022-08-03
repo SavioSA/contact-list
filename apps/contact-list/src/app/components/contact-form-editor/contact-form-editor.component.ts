@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import ContactInterface from '../../interfaces/contact.interface';
 import { DialogComponent } from "../dialog/dialog.component";
 @Component({
   selector: 'contact-list-contact-form-editor',
@@ -8,7 +9,7 @@ import { DialogComponent } from "../dialog/dialog.component";
   styleUrls: ['./contact-form-editor.component.scss'],
 })
 export class ContactFormEditorComponent implements OnInit {
-  contacts: any = [];
+  contacts: ContactInterface[] = [];
 
   contactForm = this.fb.group({
     type: [
@@ -19,15 +20,15 @@ export class ContactFormEditorComponent implements OnInit {
       }
     ],
     phone: [
-      null, {
+      '', {
         validators: [
           Validators.minLength(11),
-          Validators.maxLength(11)
+          Validators.maxLength(11),
         ]
       }
     ],
     email: [
-      null, {
+      '', {
         validators: [
           Validators.email
         ]
@@ -55,18 +56,16 @@ export class ContactFormEditorComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result?.validated) {
+        console.log(this.contactForm.value);
 
         this.contacts = [
           {
-            type: this.contactForm.value.type,
-            identifier: this.contactForm.value.email || this.contactForm.value.phone,
-            whatsapp: this.contactForm.value.isWhatsapp
+            contactTypeId: parseInt(this.contactForm.value.type as string),
+            identifier: (this.contactForm.value.email || this.contactForm.value.phone) as string,
+            isWhatsapp: this.contactForm.value.isWhatsapp as boolean
           },
           ...this.contacts
         ]
-
-        console.log(this.contacts);
-
       }
     });
   }
