@@ -1,10 +1,12 @@
+import * as cors from 'cors';
 import * as express from 'express';
 import ContactController from './app/controllers/contact/contact.controller';
 import UserController from './app/controllers/user/user.controller';
 import dbConnection from "./database/dbConnection";
 
-const app = express();
 
+const app = express();
+app.use(cors());
 app.use(express.json());
 dbConnection.initialize().then(() => {
   console.log('Database connected.');
