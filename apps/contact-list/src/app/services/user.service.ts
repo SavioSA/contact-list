@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import UserPaginationInterface from '../interfaces/user-pagination.interface';
+import UserInterface from '../interfaces/user.interface';
 @Injectable({
   providedIn: 'root'
 })
@@ -11,6 +12,9 @@ export class UserService {
 
   getAll(offset = 0, page= 0): Observable<UserPaginationInterface> {
     return this.http.get<UserPaginationInterface>(`${this.url}?offset=${offset}&page=${page}`);
+  }
+  registerUser(user: UserInterface) {
+    return this.http.post<UserInterface>(this.url, user)
   }
 
 }

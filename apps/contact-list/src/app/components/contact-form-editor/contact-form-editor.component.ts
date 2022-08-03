@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import ContactTypeInterface from '../../interfaces/contact-type.interface';
 import ContactInterface from '../../interfaces/contact.interface';
 import { ContactTypeService } from '../../services/contact-type.service';
+import { UserService } from '../../services/user.service';
 import { DialogComponent } from "../dialog/dialog.component";
 @Component({
   selector: 'contact-list-contact-form-editor',
@@ -12,7 +13,25 @@ import { DialogComponent } from "../dialog/dialog.component";
 })
 export class ContactFormEditorComponent implements OnInit {
   contacts: ContactInterface[] = [];
-  contactTypes: ContactTypeInterface[]= []
+  contactTypes: ContactTypeInterface[] = []
+  userForm = this.fb.group({
+    name: [
+      '', {
+        validators: [
+          Validators.required,
+          Validators.minLength(3),
+        ]
+      }
+    ],
+    surname: [
+      '', {
+        validators: [
+          Validators.required,
+          Validators.minLength(3),
+        ]
+      }
+    ],
+  })
   contactForm = this.fb.group({
     type: [
       '', {
@@ -43,7 +62,11 @@ export class ContactFormEditorComponent implements OnInit {
     ]
   })
 
-  constructor(public dialog: MatDialog, private fb: FormBuilder, private contactTypeService: ContactTypeService ) {}
+  constructor(
+    public dialog: MatDialog,
+    private fb: FormBuilder, private contactTypeService: ContactTypeService,
+    private userService: UserService
+  ) { }
 
   ngOnInit(): void {
     this.getContactTypes();
@@ -61,7 +84,6 @@ export class ContactFormEditorComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result?.validated) {
-        console.log(this.contactForm.value);
         const contactTypeName = this.contactTypes.find(type => {
           return type.id === parseInt(this.contactForm.value.type as string)
         })
@@ -80,6 +102,16 @@ export class ContactFormEditorComponent implements OnInit {
   getContactTypes() {
     this.contactTypeService.getAll().subscribe(res => {
       this.contactTypes = res;
+    })
+  }
+  registerUser() {
+    const { name, surname } = this.userForm.value;
+    this.userService.registerUser({
+      name: name as string,
+      surname: surname as string,
+      contacts: this.contacts
+    }).subscribe((res) => {
+      console.log(res);
     })
   }
 }

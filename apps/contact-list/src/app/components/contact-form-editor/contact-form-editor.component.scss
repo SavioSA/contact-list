@@ -5,6 +5,9 @@ mat-card{
   flex-direction: column;
 }
 
+form{
+  width: 100%;
+}
 .form-container-row{
   width: 100%;
   display: flex;
@@ -19,7 +22,7 @@ mat-card{
 }
 
 .buttons-container{
-
+  margin-top: 2rem;
   width: 60%;
   display: flex;
   justify-content: space-around;
@@ -30,11 +33,6 @@ mat-card{
     background-color: #06ac06;
     color: #fff;
   }
-}
-
-mat-accordion{
-  width: 80%;
-  margin-bottom: 2rem;
 }
 
 table{

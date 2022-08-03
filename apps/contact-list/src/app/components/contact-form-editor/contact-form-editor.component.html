@@ -2,59 +2,64 @@
   <h3>
     Novo Usuário
   </h3>
+<form [formGroup]="userForm" (submit)='registerUser()'>
   <div class="form-container-row">
     <mat-form-field appearance="outline">
       <mat-label>Nome</mat-label>
-      <input matInput placeholder="Placeholder">
-      <!-- <mat-hint>Hint</mat-hint> -->
+      <input matInput formControlName="name" placeholder="Placeholder">
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Sobrenome</mat-label>
-      <input matInput placeholder="Placeholder">
-      <!-- <mat-hint>Hint</mat-hint> -->
+      <input matInput formControlName="surname" placeholder="Placeholder">
     </mat-form-field>
   </div>
 
-<mat-accordion>
-  <mat-expansion-panel (opened)="true"
-                       (closed)="false">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <h4>
-          Contatos
-        </h4>
-      </mat-panel-title>
-      <mat-panel-description>
+  <mat-accordion>
+    <mat-expansion-panel (opened)="true"
+                        (closed)="false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h4>
+            Contatos
+          </h4>
+        </mat-panel-title>
+        <mat-panel-description>
 
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <table mat-table [dataSource]="contacts" class="mat-elevation-z8 ">
-      <ng-container matColumnDef="identifier">
-        <th mat-header-cell *matHeaderCellDef> Contato </th>
-        <td mat-cell *matCellDef="let element"> {{element.identifier}} </td>
-      </ng-container>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <table mat-table [dataSource]="contacts" class="mat-elevation-z8 ">
+        <ng-container matColumnDef="identifier">
+          <th mat-header-cell *matHeaderCellDef> Contato </th>
+          <td mat-cell *matCellDef="let element"> {{element.identifier}} </td>
+        </ng-container>
 
-      <ng-container matColumnDef="type">
-        <th mat-header-cell *matHeaderCellDef> Tipo </th>
-        <td mat-cell *matCellDef="let element">{{
-          element.contactTypeName
-        }}</td>
-      </ng-container>
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef> Tipo </th>
+          <td mat-cell *matCellDef="let element">{{
+            element.contactTypeName
+          }}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="whatsapp">
-        <th mat-header-cell *matHeaderCellDef> Whatsapp </th>
-        <td mat-cell *matCellDef="let element">{{element.whatsapp ? "Sim": "Não"}}</td>
-      </ng-container>
+        <ng-container matColumnDef="whatsapp">
+          <th mat-header-cell *matHeaderCellDef> Whatsapp </th>
+          <td mat-cell *matCellDef="let element">{{element.whatsapp ? "Sim": "Não"}}</td>
+        </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="['identifier', 'type', 'whatsapp']"></tr>
-      <tr mat-row *matRowDef="let row; columns: ['identifier', 'type', 'whatsapp'];"></tr>
-    </table>
-    <button mat-raised-button (click)="openDialog()">Adicionar</button>
+        <tr mat-header-row *matHeaderRowDef="['identifier', 'type', 'whatsapp']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['identifier', 'type', 'whatsapp'];"></tr>
+      </table>
+      <button mat-raised-button (click)="openDialog()">Adicionar</button>
 
-  </mat-expansion-panel>
-</mat-accordion>
+    </mat-expansion-panel>
+  </mat-accordion>
   <div class="buttons-container">
     <button mat-raised-button>Cancelar</button>
-    <button mat-raised-button class="register-button">Cadastrar</button>
+    <button [disabled]="!userForm.valid || contacts.length <= 0"
+    type='submit'
+     mat-raised-button class="register-button">Cadastrar</button>
   </div>
+</form>
+
 </mat-card>
+
+
