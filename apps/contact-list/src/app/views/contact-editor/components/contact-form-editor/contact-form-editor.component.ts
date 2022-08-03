@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import ContactTypeInterface from '../../interfaces/contact-type.interface';
-import ContactInterface from '../../interfaces/contact.interface';
-import { ContactTypeService } from '../../services/contact-type.service';
-import { UserService } from '../../services/user.service';
+import ContactTypeInterface from '../../../../interfaces/contact-type.interface';
+import ContactInterface from '../../../../interfaces/contact.interface';
+import { ContactTypeService } from '../../../../services/contact-type.service';
+import { UserService } from '../../../../services/user.service';
 import { DialogComponent } from "../dialog/dialog.component";
 @Component({
   selector: 'contact-list-contact-form-editor',
