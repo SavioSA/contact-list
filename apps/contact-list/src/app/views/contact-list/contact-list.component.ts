@@ -15,7 +15,7 @@ export class ContactListComponent implements OnInit {
   pagesQuantity = 0;
   totalItems = 0;
   ngOnInit(): void {
-    this.userService.getAll(8).subscribe((res: UserPaginationInterface) => {
+    this.userService.getAll(7).subscribe((res: UserPaginationInterface) => {
       const { users, pagesQuantity, totalItems } = res;
       this.users = users;
       this.pagesQuantity = pagesQuantity;
@@ -23,9 +23,7 @@ export class ContactListComponent implements OnInit {
     })
   }
   changeIndex(pageEvent: PageEvent) {
-    console.log(pageEvent.pageSize);
-
-    this.userService.getAll(8, pageEvent.pageIndex+1).subscribe((res: UserPaginationInterface) => {
+    this.userService.getAll(7, pageEvent.pageIndex+1).subscribe((res: UserPaginationInterface) => {
       const { users, pagesQuantity, totalItems } = res;
       this.users = users;
       this.pagesQuantity = pagesQuantity;
