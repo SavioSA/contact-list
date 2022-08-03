@@ -3,11 +3,11 @@ section.main{
   display: flex;
   flex-direction: column;
   align-items: center;
-  contact-list-management-buttons{
+  contact-list-management-buttons, router-outlet{
     display: flex;
-    width: 100%;
     flex-direction: column;
     align-items: center;
     padding: 2rem;
+    width: 100%;
   }
 }
