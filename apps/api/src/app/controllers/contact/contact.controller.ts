@@ -145,7 +145,7 @@ router.get<unknown, ContactPaginationInterface | MessageInterface, unknown, Pagi
     const contactsTotalCount: number = contactsSearch[1];
     const pagesQuantity: number = Math.ceil(contactsTotalCount / (offset || contactsTotalCount));
 
-    res.status(200).json({ contacts, pagesQuantity });
+    res.status(200).json({ contacts, pagesQuantity, totalItems:contactsTotalCount  });
   } catch (error) {
     res.status(500).json({ msg: `There was an error with your request: ${error}` });
   }

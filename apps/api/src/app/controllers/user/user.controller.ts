@@ -165,7 +165,7 @@ router.get<unknown, UserPaginationInterface | MessageInterface, unknown, Paginat
     const usersTotalCount: number = usersSearch[1];
     const pagesQuantity: number = Math.ceil(usersTotalCount / (offset || usersTotalCount));
 
-    res.status(200).json({ users, pagesQuantity });
+    res.status(200).json({ users, pagesQuantity, totalItems: usersTotalCount });
   } catch (error) {
     res.status(500).json({ msg: `There was an error with your request: ${error}` });
   }
