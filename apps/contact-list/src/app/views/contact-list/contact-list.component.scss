@@ -3,8 +3,22 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  .table-container{
+    width: 100%;
+    min-height: 27.5rem;
+    table{
+      width: 100%;
+      .mat-column-actions{
+        width: 5%;
+        .mat-icon{
+          color: #db0000;
+        }
+      }
+    }
+  }
 
-  table{
+  mat-paginator{
+    margin-top: 1rem;
     width: 100%;
   }
 }
