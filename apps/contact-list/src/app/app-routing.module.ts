@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ContactListComponent } from './views/contact-list/contact-list.component';
 
 const routes: Routes = [
-  { path: 'heroes', component: ContactListComponent }
+  { path: 'list', loadChildren: ()=> import('./views/contact-list/contact-list.module').then(c=>c.ContactListModule) }
 ];
 
 @NgModule({
