@@ -13,8 +13,16 @@ export class UserService {
   getAll(offset = 0, page= 0): Observable<UserPaginationInterface> {
     return this.http.get<UserPaginationInterface>(`${this.url}?offset=${offset}&page=${page}`);
   }
-  registerUser(user: UserInterface) {
+  registerUser(user: UserInterface): Observable<UserInterface> {
     return this.http.post<UserInterface>(this.url, user)
+  }
+
+  getUser(userId: number): Observable<UserInterface> {
+    return this.http.get<UserInterface>(`${this.url}/${userId}`)
+  }
+
+  editUser(user :UserInterface) {
+    return this.http.put<UserInterface>(this.url, user)
   }
 
 }

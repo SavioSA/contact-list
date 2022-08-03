@@ -6,7 +6,11 @@ const routes: Routes = [
   {
     path: 'new',
     component: ContactFormEditorComponent
-  }
+  },
+  {
+    path: 'edit/:id',
+    component: ContactFormEditorComponent
+  },
 ];
 
 @NgModule({

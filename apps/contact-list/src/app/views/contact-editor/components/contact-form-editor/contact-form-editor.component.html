@@ -1,8 +1,8 @@
 <mat-card>
   <h3>
-    Novo Usuário
+    {{userId ? "Editar Usuário" : "Novo Usuário"}}
   </h3>
-<form [formGroup]="userForm" (submit)='registerUser()'>
+<form [formGroup]="userForm" (submit)='saveUser()'>
   <div class="form-container-row">
     <mat-form-field appearance="outline">
       <mat-label>Nome</mat-label>

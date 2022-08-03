@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
+import UserInterface from 'apps/contact-list/src/app/interfaces/user.interface';
 import ContactTypeInterface from '../../../../interfaces/contact-type.interface';
 import ContactInterface from '../../../../interfaces/contact.interface';
 import { ContactTypeService } from '../../../../services/contact-type.service';
@@ -14,6 +16,7 @@ import { DialogComponent } from "../dialog/dialog.component";
 export class ContactFormEditorComponent implements OnInit {
   contacts: ContactInterface[] = [];
   contactTypes: ContactTypeInterface[] = []
+  userId!: number
   userForm = this.fb.group({
     name: [
       '', {
@@ -65,10 +68,17 @@ export class ContactFormEditorComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private fb: FormBuilder, private contactTypeService: ContactTypeService,
-    private userService: UserService
+    private userService: UserService,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
+    this.activatedRoute.params.subscribe(params => {
+      if (params["id"]) {
+        this.userId = params["id"]
+        this.getUser(this.userId);
+      }
+    })
     this.getContactTypes();
   }
 
@@ -104,11 +114,39 @@ export class ContactFormEditorComponent implements OnInit {
       this.contactTypes = res;
     })
   }
-  registerUser() {
+  saveUser() {
     const { name, surname } = this.userForm.value;
-    this.userService.registerUser({
+    const userInformations = {
       name: name as string,
-      surname: surname as string,
+      surname: surname as string
+    }
+    if (this.userId) {
+      this.editUser(userInformations)
+    } else {
+      this.registerUser(userInformations)
+    }
+  }
+  getUser(id: number) {
+    this.userService.getUser(id).subscribe(res => {
+      const { contacts, name, surname } = res;
+      this.contacts = contacts as ContactInterface[];
+      this.userForm.controls.name.setValue(name);
+      this.userForm.controls.surname.setValue(surname);
+    })
+  }
+  editUser(user: UserInterface) {
+    this.userService.editUser({
+      id: this.userId,
+      name: user.name,
+      surname: user.surname,
+    }).subscribe(res => {
+      console.log(res);
+    })
+  }
+  registerUser(user: UserInterface) {
+    this.userService.registerUser({
+      name: user.name,
+      surname: user.surname,
       contacts: this.contacts
     }).subscribe((res) => {
       console.log(res);
