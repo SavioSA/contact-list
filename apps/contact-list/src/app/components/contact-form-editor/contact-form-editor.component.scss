@@ -1,0 +1,44 @@
+mat-card{
+  width: 60%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.form-container-row{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.whatsapp-check-container{
+  width: 100%;
+  display: flex;
+  padding-right: 10%;
+  justify-content: flex-end;
+}
+
+.buttons-container{
+
+  width: 60%;
+  display: flex;
+  justify-content: space-around;
+  button{
+    width: 10rem;
+  }
+  .register-button{
+    background-color: #06ac06;
+    color: #fff;
+  }
+}
+
+mat-accordion{
+  width: 80%;
+  margin-bottom: 2rem;
+}
+
+table{
+  width: 100%;
+  margin-bottom: .5rem;
+}
+

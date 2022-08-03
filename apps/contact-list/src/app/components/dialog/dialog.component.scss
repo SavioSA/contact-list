@@ -1,0 +1,19 @@
+.whatsapp-check-container{
+  display: flex;
+  justify-content: center;
+  margin-bottom: .5rem;
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+button{
+  width: 90%;
+  position: absolute;
+  top: 13rem;
+  justify-self: flex-end;
+}
