@@ -172,9 +172,7 @@ export class ContactFormEditorComponent implements OnInit {
         name: user.name,
         surname: user.surname,
       })
-      .subscribe(() => {
-        this._snackBar.open('Usuário editado com sucesso.', 'Ok');
-      });
+      .pipe()
   }
   registerUser(user: UserInterface) {
     this.userService

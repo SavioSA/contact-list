@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import MessageInterface from '../interfaces/message.interface';
 import UserPaginationInterface from '../interfaces/user-pagination.interface';
 import UserInterface from '../interfaces/user.interface';
@@ -9,26 +11,48 @@ import UserInterface from '../interfaces/user.interface';
 })
 export class UserService {
   private url = 'http://localhost:3333/api/v1/user';
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private _snackBar: MatSnackBar
+
+  ) { }
 
   getAll(offset = 0, page = 0): Observable<UserPaginationInterface> {
     return this.http.get<UserPaginationInterface>(
       `${this.url}?offset=${offset}&page=${page}`
-    );
+    ).pipe(catchError(error => {
+      this.showError();
+      return throwError(()=> error);
+    }))
   }
 
   registerUser(user: UserInterface): Observable<UserInterface> {
-    return this.http.post<UserInterface>(this.url, user);
+    return this.http.post<UserInterface>(this.url, user).pipe(catchError(error => {
+      this.showError();
+      return throwError(()=> error);
+    }))
   }
 
   getUser(userId: number): Observable<UserInterface> {
-    return this.http.get<UserInterface>(`${this.url}/${userId}`);
+    return this.http.get<UserInterface>(`${this.url}/${userId}`).pipe(catchError(error => {
+      this.showError();
+      return throwError(()=> error);
+    }))
   }
 
   editUser(user: UserInterface): Observable<MessageInterface> {
-    return this.http.put<MessageInterface>(this.url, user);
+    return this.http.put<MessageInterface>(this.url, user).pipe(catchError(error => {
+      this.showError();
+      return throwError(()=> error);
+    }))
   }
   deleteUser(userId: number): Observable<MessageInterface> {
-    return this.http.delete<MessageInterface>(`${this.url}/${userId}`);
+    return this.http.delete<MessageInterface>(`${this.url}/${userId}`).pipe(catchError(error => {
+      this.showError();
+      return throwError(() => error);
+    }));
+  }
+  showError() {
+    this._snackBar.open("Houve um erro com a sua solicitação.")
   }
 }
