@@ -51,7 +51,7 @@
       ],
       "options": {
         "lintFilePatterns": [
-          "apps/api/**/*.ts"
+          "./apps/api/src/**/*.ts"
         ]
       }
     },
