@@ -6,11 +6,10 @@ import { MaterialModule } from "../../material.module";
 import { ContactFormEditorComponent } from './components/contact-form-editor/contact-form-editor.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { ContactEditorRoutingModule } from './contact-editor-routing.module';
-import { ContactEditorComponent } from './contact-editor.component';
 
 
 @NgModule({
-  declarations: [ContactEditorComponent, ContactFormEditorComponent, DialogComponent],
+  declarations: [ ContactFormEditorComponent, DialogComponent ],
   imports: [
     CommonModule,
     ContactEditorRoutingModule,
