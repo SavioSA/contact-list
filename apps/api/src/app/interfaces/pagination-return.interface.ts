@@ -1,4 +1,6 @@
-export default interface PaginationReturnInterface {
+interface PaginationReturnInterface {
   pagesQuantity: number;
   totalItems: number;
 }
+
+export default PaginationReturnInterface;

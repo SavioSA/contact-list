@@ -1,3 +1,5 @@
-export default interface MessageInterface {
+interface MessageInterface {
   msg: string;
 }
+
+export default MessageInterface;

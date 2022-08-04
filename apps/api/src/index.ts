@@ -3,8 +3,7 @@ import * as express from 'express';
 import ContactTypeController from './app/controllers/contact-type/contact-type.controller';
 import ContactController from './app/controllers/contact/contact.controller';
 import UserController from './app/controllers/user/user.controller';
-import dbConnection from "./database/dbConnection";
-
+import dbConnection from './database/dbConnection';
 
 const app = express();
 app.use(cors());
