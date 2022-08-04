@@ -96,8 +96,7 @@ export class ContactFormEditorComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result?.validated) {
         if (this.userId) {
-
-
+          this.setContacts();
         } else {
           this.setContactsWithoutSend();
         }
