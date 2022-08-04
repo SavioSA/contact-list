@@ -13,4 +13,8 @@ export class ContactService {
     return this.http.post<ContactInterface>(this.url, contact);
   }
 
+  deleteContact(contactId: number) {
+    return this.http.delete<ContactInterface>(`${this.url}/${contactId}`);
+  }
+
 }
