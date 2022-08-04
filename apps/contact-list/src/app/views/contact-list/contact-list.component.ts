@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import UserPaginationInterface from "../../interfaces/user-pagination.interface";
 import UserInterface from "../../interfaces/user.interface";
@@ -12,7 +13,8 @@ import { UserService } from '../../services/user.service';
 export class ContactListComponent implements OnInit {
   constructor(
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private _snackBar: MatSnackBar
 
   ) { }
 
@@ -39,8 +41,14 @@ export class ContactListComponent implements OnInit {
     this.router.navigate([`user/edit/${userId}`])
   }
   deleteUser(userId: number) {
+    try {
+
+    } catch (error) {
+
+    }
     this.userService.deleteUser(userId).subscribe(res => {
       console.log(res);
+      this._snackBar.open("Usuário excluído com sucesso.", "Ok");
       this.ngOnInit();
     })
   }

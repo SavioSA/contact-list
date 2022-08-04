@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import ContactTypeInterface from '../../../../interfaces/contact-type.interface';
 import ContactInterface from '../../../../interfaces/contact.interface';
@@ -73,7 +74,8 @@ export class ContactFormEditorComponent implements OnInit {
     private userService: UserService,
     private activatedRoute: ActivatedRoute,
     private contactService: ContactService,
-    private router: Router
+    private router: Router,
+    private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -105,6 +107,7 @@ export class ContactFormEditorComponent implements OnInit {
             contactTypeId: parseInt(this.contactForm.value.type as string),
             userId: this.userId
           }).subscribe((res) => {
+            this._snackBar.open("Contato salvo com sucesso.", "Ok")
             this.setContacts(res.id);
             })
         } else {
@@ -145,7 +148,7 @@ export class ContactFormEditorComponent implements OnInit {
       name: user.name,
       surname: user.surname,
     }).subscribe(res => {
-      console.log(res);
+      this._snackBar.open("Usuário editado com sucesso.", "Ok")
     })
   }
   registerUser(user: UserInterface) {
@@ -154,6 +157,7 @@ export class ContactFormEditorComponent implements OnInit {
       surname: user.surname,
       contacts: this.contacts
     }).subscribe((res) => {
+      this._snackBar.open("Usuário registrado com sucesso.", "Ok")
       this.router.navigate([`/user/edit/${res.id}`])
     })
   }
@@ -170,6 +174,7 @@ export class ContactFormEditorComponent implements OnInit {
         return contact.identifier !== contactInfo.identifier
       })
     }
+    this._snackBar.open("Contato deletado com sucesso.", "Ok")
   }
 
   setContacts(id: number | null = null) {
