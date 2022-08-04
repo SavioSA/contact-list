@@ -4,11 +4,11 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../material.module';
 import { ContactFormEditorComponent } from './components/contact-form-editor/contact-form-editor.component';
-import { DialogComponent } from './components/dialog/dialog.component';
+import { DialogContactEditorComponent } from './components/dialog/dialog-contact-editor.component';
 import { ContactEditorRoutingModule } from './contact-editor-routing.module';
 
 @NgModule({
-  declarations: [ContactFormEditorComponent, DialogComponent],
+  declarations: [ContactFormEditorComponent, DialogContactEditorComponent],
   imports: [
     CommonModule,
     ContactEditorRoutingModule,

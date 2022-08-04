@@ -1,13 +1,13 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
-  selector: 'contact-list-dialog',
-  templateUrl: './dialog.component.html',
-  styleUrls: ['./dialog.component.scss'],
+  selector: 'contact-list-dialog-contact-editor',
+  templateUrl: './dialog-contact-editor.component.html',
+  styleUrls: ['./dialog-contact-editor.component.scss'],
 })
-export class DialogComponent {
+export class DialogContactEditorComponent {
   constructor(
-    public dialogRef: MatDialogRef<DialogComponent>,
+    public dialogRef: MatDialogRef<DialogContactEditorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 

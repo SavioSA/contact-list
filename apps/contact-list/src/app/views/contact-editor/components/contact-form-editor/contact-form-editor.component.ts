@@ -10,7 +10,7 @@ import UserInterface from '../../../../interfaces/user.interface';
 import { ContactTypeService } from '../../../../services/contact-type.service';
 import { ContactService } from '../../../../services/contact.service';
 import { UserService } from '../../../../services/user.service';
-import { DialogComponent } from '../dialog/dialog.component';
+import { DialogContactEditorComponent } from '../dialog/dialog-contact-editor.component';
 @Component({
   selector: 'contact-list-contact-form-editor',
   templateUrl: './contact-form-editor.component.html',
@@ -84,7 +84,7 @@ export class ContactFormEditorComponent implements OnInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(DialogComponent, {
+    const dialogRef = this.dialog.open(DialogContactEditorComponent, {
       width: '16rem',
       height: '360px',
       data: {
