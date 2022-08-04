@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import UserPaginationInterface from "../../interfaces/user-pagination.interface";
-import UserInterface from "../../interfaces/user.interface";
+import UserPaginationInterface from '../../interfaces/user-pagination.interface';
+import UserInterface from '../../interfaces/user.interface';
 import { UserService } from '../../services/user.service';
 @Component({
   selector: 'contact-list-contact-list',
@@ -15,10 +15,9 @@ export class ContactListComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private _snackBar: MatSnackBar
+  ) {}
 
-  ) { }
-
-  users: UserInterface[] = [] ;
+  users: UserInterface[] = [];
   pagesQuantity = 0;
   totalItems = 0;
   ngOnInit(): void {
@@ -27,24 +26,26 @@ export class ContactListComponent implements OnInit {
       this.users = users;
       this.pagesQuantity = pagesQuantity;
       this.totalItems = totalItems;
-    })
+    });
   }
   changeIndex(pageEvent: PageEvent) {
-    this.userService.getAll(8, pageEvent.pageIndex+1).subscribe((res: UserPaginationInterface) => {
-      const { users, pagesQuantity, totalItems } = res;
-      this.users = users;
-      this.pagesQuantity = pagesQuantity;
-      this.totalItems = totalItems;
-    })
+    this.userService
+      .getAll(8, pageEvent.pageIndex + 1)
+      .subscribe((res: UserPaginationInterface) => {
+        const { users, pagesQuantity, totalItems } = res;
+        this.users = users;
+        this.pagesQuantity = pagesQuantity;
+        this.totalItems = totalItems;
+      });
   }
   goToUser(userId: number) {
-    this.router.navigate([`user/edit/${userId}`])
+    this.router.navigate([`user/edit/${userId}`]);
   }
   deleteUser(userId: number) {
-    this.userService.deleteUser(userId).subscribe(res => {
+    this.userService.deleteUser(userId).subscribe((res) => {
       console.log(res);
-      this._snackBar.open("Usuário excluído com sucesso.", "Ok");
+      this._snackBar.open('Usuário excluído com sucesso.', 'Ok');
       this.ngOnInit();
-    })
+    });
   }
 }

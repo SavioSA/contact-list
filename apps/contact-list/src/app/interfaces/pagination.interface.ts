@@ -1,4 +1,4 @@
-export interface PaginationInterface{
-  offset: number
-  page: number
+export interface PaginationInterface {
+  offset: number;
+  page: number;
 }

@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ContactFormEditorComponent } from "./components/contact-form-editor/contact-form-editor.component";
+import { ContactFormEditorComponent } from './components/contact-form-editor/contact-form-editor.component';
 
 const routes: Routes = [
   {
     path: 'new',
-    component: ContactFormEditorComponent
+    component: ContactFormEditorComponent,
   },
   {
     path: 'edit/:id',
-    component: ContactFormEditorComponent
+    component: ContactFormEditorComponent,
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class ContactEditorRoutingModule { }
+export class ContactEditorRoutingModule {}

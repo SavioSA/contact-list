@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import dbConnection from '../../../database/dbConnection';
 import MessageInterface from '../../interfaces/message.interface';
-import { PaginationInterface } from '../../interfaces/pagination.interface';
+import PaginationInterface from '../../interfaces/pagination.interface';
 import ContactTypeInterface from './interfaces/contact-type.interface';
 
 const router: Router = Router();

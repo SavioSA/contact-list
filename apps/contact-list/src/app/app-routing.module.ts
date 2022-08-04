@@ -4,16 +4,22 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: 'list',
-    loadChildren: () => import('./views/contact-list/contact-list.module').then(c => c.ContactListModule)
+    loadChildren: () =>
+      import('./views/contact-list/contact-list.module').then(
+        (c) => c.ContactListModule
+      ),
   },
   {
     path: 'user',
-    loadChildren: () => import('./views/contact-editor/contact-editor-routing.module').then(c => c.ContactEditorRoutingModule)
-  }
+    loadChildren: () =>
+      import('./views/contact-editor/contact-editor-routing.module').then(
+        (c) => c.ContactEditorRoutingModule
+      ),
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
