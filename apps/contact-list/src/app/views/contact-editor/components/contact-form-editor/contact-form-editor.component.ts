@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DialogConfirmationComponent } from 'apps/contact-list/src/app/components/dialog-confirmation/dialog-confirmation.component';
 import ContactInputInterface from 'apps/contact-list/src/app/interfaces/contact-input.interface';
 import ContactTypeInterface from '../../../../interfaces/contact-type.interface';
 import ContactInterface from '../../../../interfaces/contact.interface';
@@ -122,6 +123,21 @@ export class ContactFormEditorComponent implements OnInit {
         context.setContactsWithoutSend();
       }
     }
+  }
+
+  openDeleteDialog(contactInfo: { id: number; identifier: string }) {
+  const dialogRef = this.dialog.open(DialogConfirmationComponent, {
+      width: '16rem',
+      height: '184px',
+      data: {
+          message:`Deseja realmente exluir o contato ${contactInfo.identifier}?`
+        }
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.response) {
+        this.deleteContact(contactInfo)
+      }
+    });
   }
 
   openDialog(data: unknown, todo: Function) {
