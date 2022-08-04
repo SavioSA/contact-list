@@ -26,5 +26,7 @@ export class UserService {
   editUser(user: UserInterface): Observable<MessageInterface> {
     return this.http.put<MessageInterface>(this.url, user)
   }
-
+  deleteUser(userId: number): Observable<MessageInterface> {
+    return this.http.delete<MessageInterface>(`${this.url}/${userId}`);
+  }
 }

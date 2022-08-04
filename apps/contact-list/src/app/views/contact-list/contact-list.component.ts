@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
+import { Router } from '@angular/router';
 import UserPaginationInterface from "../../interfaces/user-pagination.interface";
 import UserInterface from "../../interfaces/user.interface";
 import { UserService } from '../../services/user.service';
@@ -9,7 +10,11 @@ import { UserService } from '../../services/user.service';
   styleUrls: ['./contact-list.component.scss'],
 })
 export class ContactListComponent implements OnInit {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private router: Router
+
+  ) { }
 
   users: UserInterface[] = [] ;
   pagesQuantity = 0;
@@ -28,6 +33,15 @@ export class ContactListComponent implements OnInit {
       this.users = users;
       this.pagesQuantity = pagesQuantity;
       this.totalItems = totalItems;
+    })
+  }
+  goToUser(userId: number) {
+    this.router.navigate([`user/edit/${userId}`])
+  }
+  deleteUser(userId: number) {
+    this.userService.deleteUser(userId).subscribe(res => {
+      console.log(res);
+      this.ngOnInit();
     })
   }
 }

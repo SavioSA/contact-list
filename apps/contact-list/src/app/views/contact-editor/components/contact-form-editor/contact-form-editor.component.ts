@@ -111,6 +111,7 @@ export class ContactFormEditorComponent implements OnInit {
             this.setContacts();
         }
       }
+      this.contactForm.reset();
     });
   }
   getContactTypes() {
@@ -159,14 +160,14 @@ export class ContactFormEditorComponent implements OnInit {
 
   deleteContact(contactInfo:{id: number, identifier: string}) {
     if (contactInfo?.id) {
-    this.contactService.deleteContact(contactInfo.id).subscribe(() => {
+      this.contactService.deleteContact(contactInfo.id).subscribe(() => {
       this.contacts = this.contacts.filter(contact => {
-        contact.id === contactInfo.id
+        return contact.id !== contactInfo.id
       })
     })
     } else {
       this.contacts = this.contacts.filter(contact => {
-        contact.identifier === contactInfo.identifier
+        return contact.identifier !== contactInfo.identifier
       })
     }
   }
