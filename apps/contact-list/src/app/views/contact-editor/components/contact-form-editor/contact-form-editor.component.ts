@@ -18,7 +18,7 @@ import { DialogContactEditorComponent } from '../dialog/dialog-contact-editor.co
 })
 export class ContactFormEditorComponent implements OnInit {
   contacts: any = [];
-  currentContactId!: number | undefined;
+  currentContactId!: number;
   contactTypes: ContactTypeInterface[] = [];
   userId!: number;
   userForm = this.fb.group({
@@ -37,7 +37,7 @@ export class ContactFormEditorComponent implements OnInit {
   });
   contactForm = this.fb.group({
     type: [
-      '',
+      0,
       {
         validators: [Validators.required],
       },
@@ -83,26 +83,63 @@ export class ContactFormEditorComponent implements OnInit {
     this.getContactTypes();
   }
 
-  openDialog(): void {
+  updateContact(result: { validated: boolean }, context: this) {
+    const { phone, email, isWhatsapp} = context.contactForm.value
+    const data = {
+      identifier: (phone ? phone : email) as string,
+      isWhatsapp: isWhatsapp as boolean
+    }
+    context.contactService.updateContact(context.currentContactId, data).subscribe(res => {
+      context.getUser(context.userId);
+    })
+  }
+
+  editContact(contactId: number) {
+    this.currentContactId = contactId;
+    this.contactService.getContact(contactId).subscribe(res => {
+      const { identifier, isWhatsapp, contactType } = res;
+      this.contactForm.controls.isWhatsapp.setValue(isWhatsapp)
+      this.contactForm.controls.type.setValue(contactType?.id)
+      this.contactForm.controls.phone.setValue(contactType?.id === 1 ? identifier : null)
+      this.contactForm.controls.email.setValue(contactType?.id === 2 ? identifier : null)
+      const data = {
+        formData: this.contactForm,
+        contactTypes: this.contactTypes,
+        userId: this.userId
+      }
+      this.openDialog(data, this.updateContact)
+    })
+  }
+
+  createContact(result: {validated: boolean}, context: this) {
+    if (result?.validated) {
+      if (context.userId) {
+        context.setContacts();
+      } else {
+        context.setContactsWithoutSend();
+      }
+    }
+  }
+
+  openDialog(data: unknown, todo: Function) {
     const dialogRef = this.dialog.open(DialogContactEditorComponent, {
       width: '16rem',
       height: '360px',
-      data: {
-        formData: this.contactForm,
-        contactTypes: this.contactTypes,
-      },
+      data
     });
-
     dialogRef.afterClosed().subscribe((result) => {
-      if (result?.validated) {
-        if (this.userId) {
-          this.setContacts();
-        } else {
-          this.setContactsWithoutSend();
-        }
-      }
+      todo(result, this);
     });
   }
+
+  addContact(): void {
+    const data = {
+      formData: this.contactForm,
+      contactTypes: this.contactTypes
+    }
+    this.openDialog(data, this.createContact);
+  }
+
   getContactTypes() {
     this.contactTypeService.getAll().subscribe((res) => {
       this.contactTypes = res;
@@ -169,12 +206,12 @@ export class ContactFormEditorComponent implements OnInit {
 
   setContactsWithoutSend() {
     const contactType = this.contactTypes.find(type => {
-      return parseInt(this.contactForm.value.type as string)
+      return this.contactForm.value.type
     })
     this.contacts = [
       {
         contactTypeName: contactType?.type,
-        contactTypeId: parseInt(this.contactForm.value.type as string),
+        contactTypeId: this.contactForm.value.type,
         identifier: (this.contactForm.value.email ||
           this.contactForm.value.phone) as string,
         isWhatsapp: this.contactForm.value.isWhatsapp as boolean,
@@ -190,7 +227,7 @@ export class ContactFormEditorComponent implements OnInit {
         identifier: (this.contactForm.value.email ||
           this.contactForm.value.phone) as string,
         isWhatsapp: this.contactForm.value.isWhatsapp as boolean,
-        contactTypeId: parseInt(this.contactForm.value.type as string),
+        contactTypeId: (this.contactForm.value.type as number),
         userId: this.userId,
       })
       .subscribe((res) => {

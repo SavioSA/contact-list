@@ -1,11 +1,11 @@
-  <div class="form-container-row">
+  <div class="dialog-container">
     <h4>
-      Adicionar novo contato
+      {{data.userId? "Editar contato": "Adicionar novo contato"}}
     </h4>
     <form action="" [formGroup]="data.formData" (ngSubmit)='submit()'>
       <mat-form-field appearance="fill">
         <mat-label>Tipo de Contato</mat-label>
-        <mat-select (selectionChange)="clearFields()" formControlName="type">
+        <mat-select  [disabled]="data.userId" (selectionChange)="clearFields()" formControlName="type">
           <mat-option  *ngFor="let type of data.contactTypes" [value]="type.id">
             {{type.type}}
           </mat-option>

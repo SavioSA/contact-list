@@ -11,7 +11,10 @@ export class DialogContactEditorComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.data);
+
+  }
 
   clearFields() {
     this.data.formData.controls['phone'].setValue('');

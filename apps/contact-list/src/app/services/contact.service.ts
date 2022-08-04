@@ -16,7 +16,18 @@ export class ContactService {
     return this.http.post<ContactInterface>(this.url, contact);
   }
 
+  getContact(contactId: number):Observable<ContactInterface> {
+    return this.http.get<ContactInterface>(`${this.url}/${contactId}`);
+  }
+
   deleteContact(contactId: number) {
     return this.http.delete<ContactInterface>(`${this.url}/${contactId}`);
+  }
+
+  updateContact(contactId: number, contact:{identifier: string, isWhatsapp: boolean}) {
+    return this.http.put<ContactInterface>(this.url, {
+      id: contactId,
+      ...contact
+    });
   }
 }
