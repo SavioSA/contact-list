@@ -1,9 +1,11 @@
+import ContactTypeInterface from '../controllers/contact-type/interfaces/contact-type.interface';
+
 interface ContactInterface {
   id?: number;
   identifier: string;
-  contactTypeId: number;
+  contactType: ContactTypeInterface;
   isWhatsapp: boolean;
-  userId?: number;
+  userId: number;
 }
 
 export default ContactInterface;

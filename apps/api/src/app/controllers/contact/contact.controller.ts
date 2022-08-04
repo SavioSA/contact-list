@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { body, oneOf, validationResult } from 'express-validator';
 import dbConnection from '../../../database/dbConnection';
 import Contact from '../../../database/entities/contact.entity';
+import ContactInputInterface from '../../interfaces/contact-input.interface';
 import ContactInterface from '../../interfaces/contact.interface';
 import MessageInterface from '../../interfaces/message.interface';
 import PaginationInterface from '../../interfaces/pagination.interface';
@@ -22,7 +23,7 @@ function setErrorValidationMessage(errors: { msg: string } []) {
   return `There was an error with your request:${errorMessage}`;
 }
 
-function validatedContactBusinessRules(contact: ContactInterface) {
+function validatedContactBusinessRules(contact: ContactInputInterface) {
   const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
   if (contact.contactTypeId === 1 && emailRegex.test(contact.identifier)) {
     return {
@@ -42,7 +43,7 @@ function validatedContactBusinessRules(contact: ContactInterface) {
   return null;
 }
 
-router.post<unknown, ContactInterface | MessageInterface, ContactInterface, unknown>(
+router.post<unknown, ContactInterface | MessageInterface, ContactInputInterface, unknown>(
   '/',
   body('isWhatsapp').isBoolean().withMessage('isWhatsapp must be a boolean.'),
   oneOf([
@@ -68,13 +69,22 @@ router.post<unknown, ContactInterface | MessageInterface, ContactInterface, unkn
         const newContact = new Contact();
         newContact.identifier = contact.identifier;
         newContact.isWhatsapp = contact.isWhatsapp;
-        newContact.contactTypeId = contact.contactTypeId;
+        newContact.contactType = contact.contactTypeId;
         const isNotValid = validatedContactBusinessRules(contact);
         if (isNotValid) {
           res.status(403).json(isNotValid);
           return;
         }
-        const result = await contactRepository.save({ ...newContact, userId: contact.userId });
+        const contactRegistered = await contactRepository.save({
+          ...newContact, userId: contact.userId,
+        });
+        const result = await contactRepository.findOne({
+          where: {
+            id: contactRegistered.id,
+          },
+          relations: ['contactType'],
+        });
+        console.log(result);
         res.json(result as ContactInterface);
       } else {
         const errorMessage = setErrorValidationMessage(errors.array());
@@ -87,7 +97,7 @@ router.post<unknown, ContactInterface | MessageInterface, ContactInterface, unkn
   },
 );
 
-router.put<unknown, MessageInterface, ContactInterface, unknown>(
+router.put<unknown, MessageInterface, ContactInputInterface, unknown>(
   '/',
   body('isWhatsapp').isBoolean().withMessage('isWhatsapp must be a boolean.').optional(),
   oneOf([
@@ -111,7 +121,7 @@ router.put<unknown, MessageInterface, ContactInterface, unknown>(
         } else {
           contact.identifier = identifier || contact.identifier;
           contact.isWhatsapp = isWhatsapp || contact.isWhatsapp;
-          const isNotValid = validatedContactBusinessRules(contact as ContactInterface);
+          const isNotValid = validatedContactBusinessRules(contact as ContactInputInterface);
           if (isNotValid) {
             res.status(403).json(isNotValid);
             return;
@@ -143,6 +153,7 @@ router.get<unknown, ContactPaginationInterface | MessageInterface, unknown, Pagi
     const contactsSearch = await contactRepository.findAndCount({
       take,
       skip: itensPerPage,
+      relations: ['contactType'],
     });
 
     const contacts = contactsSearch[0] as unknown as ContactInterface[];
@@ -161,6 +172,7 @@ router.get< { id: number }, ContactInterface | MessageInterface, unknown, unknow
     const { id } = req.params;
     const contact = await contactRepository.findOne({
       where: { id },
+      relations: ['contactType'],
     });
     if (contact) {
       res.status(200).json(contact as ContactInterface);

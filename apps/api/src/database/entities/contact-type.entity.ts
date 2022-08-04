@@ -1,5 +1,5 @@
 import {
-  Column, Entity, ManyToOne, PrimaryGeneratedColumn,
+  Column, Entity, OneToMany, PrimaryGeneratedColumn
 } from 'typeorm';
 import Contact from './contact.entity';
 
@@ -13,6 +13,6 @@ export default class ContactType {
     @Column()
       type: string;
 
-    @ManyToOne(() => Contact, (contact) => contact.contactType)
+    @OneToMany(() => Contact, (contact) => contact.contactType)
       contacts: Contact[];
 }

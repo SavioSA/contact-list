@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import ContactInputInterface from 'apps/contact-list/src/app/interfaces/contact-input.interface';
 import ContactTypeInterface from '../../../../interfaces/contact-type.interface';
 import ContactInterface from '../../../../interfaces/contact.interface';
 import UserInterface from '../../../../interfaces/user.interface';
@@ -16,7 +17,7 @@ import { DialogComponent } from '../dialog/dialog.component';
   styleUrls: ['./contact-form-editor.component.scss'],
 })
 export class ContactFormEditorComponent implements OnInit {
-  contacts: ContactInterface[] = [];
+  contacts: any = [];
   currentContactId!: number | undefined;
   contactTypes: ContactTypeInterface[] = [];
   userId!: number;
@@ -95,23 +96,12 @@ export class ContactFormEditorComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result?.validated) {
         if (this.userId) {
-          this.contactService
-            .registerContact({
-              identifier: (this.contactForm.value.email ||
-                this.contactForm.value.phone) as string,
-              isWhatsapp: this.contactForm.value.isWhatsapp as boolean,
-              contactTypeId: parseInt(this.contactForm.value.type as string),
-              userId: this.userId,
-            })
-            .subscribe((res) => {
-              this._snackBar.open('Contato salvo com sucesso.', 'Ok');
-              this.setContacts(res.id);
-            });
+
+
         } else {
-          this.setContacts();
+          this.setContactsWithoutSend();
         }
       }
-      this.contactForm.reset();
     });
   }
   getContactTypes() {
@@ -166,34 +156,50 @@ export class ContactFormEditorComponent implements OnInit {
   deleteContact(contactInfo: { id: number; identifier: string }) {
     if (contactInfo?.id) {
       this.contactService.deleteContact(contactInfo.id).subscribe(() => {
-        this.contacts = this.contacts.filter((contact) => {
+        this.contacts = this.contacts.filter((contact: ContactInterface) => {
           return contact.id !== contactInfo.id;
         });
       });
     } else {
-      this.contacts = this.contacts.filter((contact) => {
+      this.contacts = this.contacts.filter((contact: ContactInputInterface) => {
         return contact.identifier !== contactInfo.identifier;
       });
     }
     this._snackBar.open('Contato deletado com sucesso.', 'Ok');
   }
 
-  setContacts(id: number | null = null) {
-    const contactTypeName = this.contactTypes.find((type) => {
-      return type.id === parseInt(this.contactForm.value.type as string);
-    });
-    const contactInfo = {
-      contactTypeName: contactTypeName?.type,
-      contactTypeId: parseInt(this.contactForm.value.type as string),
-      identifier: (this.contactForm.value.email ||
-        this.contactForm.value.phone) as string,
-      isWhatsapp: this.contactForm.value.isWhatsapp as boolean,
-    };
-
+  setContactsWithoutSend() {
+    const contactType = this.contactTypes.find(type => {
+      return parseInt(this.contactForm.value.type as string)
+    })
     this.contacts = [
-      id ? { ...contactInfo, id } : contactInfo,
-      ...this.contacts,
-    ];
+      {
+        contactTypeName: contactType?.type,
+        contactTypeId: parseInt(this.contactForm.value.type as string),
+        identifier: (this.contactForm.value.email ||
+          this.contactForm.value.phone) as string,
+        isWhatsapp: this.contactForm.value.isWhatsapp as boolean,
+      },
+      ...this.contacts
+    ]
+    this.contactForm.reset();
+  }
+
+  setContacts() {
+    this.contactService
+      .registerContact({
+        identifier: (this.contactForm.value.email ||
+          this.contactForm.value.phone) as string,
+        isWhatsapp: this.contactForm.value.isWhatsapp as boolean,
+        contactTypeId: parseInt(this.contactForm.value.type as string),
+        userId: this.userId,
+      })
+      .subscribe((res) => {
+        res.contactType
+        this.contacts = [...this.contacts, res]
+        this._snackBar.open('Contato salvo com sucesso.', 'Ok');
+      });
+    this.contactForm.reset();
   }
 
   goBackToList() {

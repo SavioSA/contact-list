@@ -1,8 +1,9 @@
+import ContactTypeInterface from './contact-type.interface';
+
 export default interface ContactInterface {
   id?: number;
   identifier: string;
-  contactTypeId?: number;
-  contactTypeName?: string | undefined;
+  contactType: ContactTypeInterface;
   isWhatsapp: boolean;
   userId?: number;
 }
