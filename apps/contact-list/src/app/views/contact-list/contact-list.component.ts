@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { DialogConfirmationComponent } from '../../components/dialog-confirmation/dialog-confirmation.component';
 import UserPaginationInterface from '../../interfaces/user-pagination.interface';
 import UserInterface from '../../interfaces/user.interface';
 import { UserService } from '../../services/user.service';
@@ -14,7 +16,9 @@ export class ContactListComponent implements OnInit {
   constructor(
     private userService: UserService,
     private router: Router,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    public dialog: MatDialog
+
   ) {}
 
   users: UserInterface[] = [];
@@ -46,6 +50,20 @@ export class ContactListComponent implements OnInit {
       console.log(res);
       this._snackBar.open('Usuário excluído com sucesso.', 'Ok');
       this.ngOnInit();
+    });
+  }
+  openDeleteDialog(userInformations: {id: number, name: string, surname: string}) {
+  const dialogRef = this.dialog.open(DialogConfirmationComponent, {
+      width: '16rem',
+      height: '184px',
+      data: {
+          message:`Deseja realmente exluir o usuário ${userInformations.name} ${userInformations.surname}?`
+        }
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.response) {
+        this.deleteUser(userInformations.id);
+      }
     });
   }
 }
