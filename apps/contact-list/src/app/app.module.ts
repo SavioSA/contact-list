@@ -3,15 +3,20 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { DialogConfirmationComponent } from "./components/dialog-confirmation/dialog-confirmation.component";
 import { ManagementButtonsComponent } from './components/management-buttons/management-buttons.component';
 import { MaterialModule } from './material.module';
 import { NxWelcomeComponent } from './nx-welcome.component';
 import { UserService } from './services/user.service';
 import { ContactEditorModule } from './views/contact-editor/contact-editor.module';
 import { ContactListModule } from './views/contact-list/contact-list.module';
-
 @NgModule({
-  declarations: [AppComponent, NxWelcomeComponent, ManagementButtonsComponent],
+  declarations: [
+    AppComponent,
+    NxWelcomeComponent,
+    ManagementButtonsComponent,
+    DialogConfirmationComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
