@@ -79,6 +79,10 @@ export class ContactFormEditorComponent implements OnInit {
       if (params['id']) {
         this.userId = params['id'];
         this.getUser(this.userId);
+        console.log(this.userForm.controls.name.value);
+        if (this.userForm.controls.name.value !== '') {
+          this.router.navigate([`/list`]);
+        }
       }
     });
     this.getContactTypes();
@@ -86,36 +90,42 @@ export class ContactFormEditorComponent implements OnInit {
 
   updateContact(result: { validated: boolean }, context: this) {
     if (result?.validated) {
-    const { phone, email, isWhatsapp} = context.contactForm.value
-    const data = {
-      identifier: (phone ? phone : email) as string,
-      isWhatsapp: isWhatsapp as boolean
-    }
-      context.contactService.updateContact(context.currentContactId, data).subscribe(res => {
-      context._snackBar.open("Contato Atualizado com sucesso.", "OK")
-      context.getUser(context.userId);
-    })
+      const { phone, email, isWhatsapp } = context.contactForm.value;
+      const data = {
+        identifier: (phone ? phone : email) as string,
+        isWhatsapp: isWhatsapp as boolean,
+      };
+      context.contactService
+        .updateContact(context.currentContactId, data)
+        .subscribe((res) => {
+          context._snackBar.open('Contato Atualizado com sucesso.', 'OK');
+          context.getUser(context.userId);
+        });
     }
   }
 
   editContact(contactId: number) {
     this.currentContactId = contactId;
-    this.contactService.getContact(contactId).subscribe(res => {
+    this.contactService.getContact(contactId).subscribe((res) => {
       const { identifier, isWhatsapp, contactType } = res;
-      this.contactForm.controls.isWhatsapp.setValue(isWhatsapp)
-      this.contactForm.controls.type.setValue(contactType?.id)
-      this.contactForm.controls.phone.setValue(contactType?.id === 1 ? identifier : null)
-      this.contactForm.controls.email.setValue(contactType?.id === 2 ? identifier : null)
+      this.contactForm.controls.isWhatsapp.setValue(isWhatsapp);
+      this.contactForm.controls.type.setValue(contactType?.id);
+      this.contactForm.controls.phone.setValue(
+        contactType?.id === 1 ? identifier : null
+      );
+      this.contactForm.controls.email.setValue(
+        contactType?.id === 2 ? identifier : null
+      );
       const data = {
         formData: this.contactForm,
         contactTypes: this.contactTypes,
-        userId: this.userId
-      }
-      this.openDialog(data, this.updateContact)
-    })
+        userId: this.userId,
+      };
+      this.openDialog(data, this.updateContact);
+    });
   }
 
-  createContact(result: {validated: boolean}, context: this) {
+  createContact(result: { validated: boolean }, context: this) {
     if (result?.validated) {
       if (context.userId) {
         context.setContacts();
@@ -126,25 +136,26 @@ export class ContactFormEditorComponent implements OnInit {
   }
 
   openDeleteDialog(contactInfo: { id: number; identifier: string }) {
-  const dialogRef = this.dialog.open(DialogConfirmationComponent, {
+    const dialogRef = this.dialog.open(DialogConfirmationComponent, {
       width: '16rem',
       height: '184px',
       data: {
-          message:`Deseja realmente exluir o contato ${contactInfo.identifier}?`
-        }
+        message: `Deseja realmente exluir o contato ${contactInfo.identifier}?`,
+      },
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result.response) {
-        this.deleteContact(contactInfo)
+        this.deleteContact(contactInfo);
       }
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   openDialog(data: unknown, todo: Function) {
     const dialogRef = this.dialog.open(DialogContactEditorComponent, {
       width: '16rem',
       height: '360px',
-      data
+      data,
     });
     dialogRef.afterClosed().subscribe((result) => {
       todo(result, this);
@@ -154,8 +165,8 @@ export class ContactFormEditorComponent implements OnInit {
   addContact(): void {
     const data = {
       formData: this.contactForm,
-      contactTypes: this.contactTypes
-    }
+      contactTypes: this.contactTypes,
+    };
     this.openDialog(data, this.createContact);
   }
 
@@ -177,11 +188,16 @@ export class ContactFormEditorComponent implements OnInit {
     }
   }
   getUser(id: number) {
-    this.userService.getUser(id).subscribe((res) => {
-      const { contacts, name, surname } = res;
-      this.contacts = contacts as ContactInterface[];
-      this.userForm.controls.name.setValue(name);
-      this.userForm.controls.surname.setValue(surname);
+    this.userService.getUser(id).subscribe({
+      next: (res) => {
+        const { contacts, name, surname } = res;
+        this.contacts = contacts as ContactInterface[];
+        this.userForm.controls.name.setValue(name);
+        this.userForm.controls.surname.setValue(surname);
+      },
+      error: () => {
+        this.router.navigate(['/list']);
+      },
     });
   }
   editUser(user: UserInterface) {
@@ -191,7 +207,7 @@ export class ContactFormEditorComponent implements OnInit {
         name: user.name,
         surname: user.surname,
       })
-      .pipe()
+      .pipe();
   }
   registerUser(user: UserInterface) {
     this.userService
@@ -222,9 +238,9 @@ export class ContactFormEditorComponent implements OnInit {
   }
 
   setContactsWithoutSend() {
-    const contactType = this.contactTypes.find(type => {
-      return this.contactForm.value.type
-    })
+    const contactType = this.contactTypes.find((type) => {
+      return this.contactForm.value.type;
+    });
     this.contacts = [
       {
         contactTypeName: contactType?.type,
@@ -233,8 +249,8 @@ export class ContactFormEditorComponent implements OnInit {
           this.contactForm.value.phone) as string,
         isWhatsapp: this.contactForm.value.isWhatsapp as boolean,
       },
-      ...this.contacts
-    ]
+      ...this.contacts,
+    ];
     this.contactForm.reset();
   }
 
@@ -244,12 +260,12 @@ export class ContactFormEditorComponent implements OnInit {
         identifier: (this.contactForm.value.email ||
           this.contactForm.value.phone) as string,
         isWhatsapp: this.contactForm.value.isWhatsapp as boolean,
-        contactTypeId: (this.contactForm.value.type as number),
+        contactTypeId: this.contactForm.value.type as number,
         userId: this.userId,
       })
       .subscribe((res) => {
-        res.contactType
-        this.contacts = [...this.contacts, res]
+        res.contactType;
+        this.contacts = [...this.contacts, res];
         this._snackBar.open('Contato salvo com sucesso.', 'Ok');
       });
     this.contactForm.reset();

@@ -16,6 +16,10 @@ const routes: Routes = [
         (c) => c.ContactEditorRoutingModule
       ),
   },
+  {
+    path: '**',
+    redirectTo: 'list',
+  },
 ];
 
 @NgModule({

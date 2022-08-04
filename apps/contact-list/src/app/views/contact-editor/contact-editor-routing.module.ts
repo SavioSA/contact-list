@@ -11,6 +11,11 @@ const routes: Routes = [
     path: 'edit/:id',
     component: ContactFormEditorComponent,
   },
+  {
+    path: '',
+    redirectTo: 'new',
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({
