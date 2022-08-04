@@ -21,38 +21,40 @@ export class UserService {
     return this.http.get<UserPaginationInterface>(
       `${this.url}?offset=${offset}&page=${page}`
     ).pipe(catchError(error => {
-      this.showError();
+      this.showError(error.error.msg);
       return throwError(()=> error);
     }))
   }
 
   registerUser(user: UserInterface): Observable<UserInterface> {
     return this.http.post<UserInterface>(this.url, user).pipe(catchError(error => {
-      this.showError();
+      this.showError(error.error.msg);
       return throwError(()=> error);
     }))
   }
 
   getUser(userId: number): Observable<UserInterface> {
     return this.http.get<UserInterface>(`${this.url}/${userId}`).pipe(catchError(error => {
-      this.showError();
+      this.showError(error.error.msg);
       return throwError(()=> error);
     }))
   }
 
   editUser(user: UserInterface): Observable<MessageInterface> {
     return this.http.put<MessageInterface>(this.url, user).pipe(catchError(error => {
-      this.showError();
+      this.showError(error.error.msg);
       return throwError(()=> error);
     }))
   }
   deleteUser(userId: number): Observable<MessageInterface> {
     return this.http.delete<MessageInterface>(`${this.url}/${userId}`).pipe(catchError(error => {
-      this.showError();
+      console.log(error);
+
+      this.showError(error.error.msg);
       return throwError(() => error);
     }));
   }
-  showError() {
-    this._snackBar.open("Houve um erro com a sua solicitação.")
+  showError(msg: string) {
+    this._snackBar.open(msg, "OK")
   }
 }

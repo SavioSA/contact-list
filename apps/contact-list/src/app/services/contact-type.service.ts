@@ -17,11 +17,11 @@ export class ContactTypeService {
     return this.http.get<ContactTypeInterface[]>(
       `${this.url}?offset=${offset}&page=${page}`
     ).pipe(catchError(error => {
-      this.showError();
+      this.showError(error.error.msg);
       return throwError(()=> error);
     }))
   }
-  showError() {
-    this._snackBar.open("Houve um erro com a sua solicitação.")
+  showError(msg: string) {
+    this._snackBar.open(msg, "OK")
   }
 }

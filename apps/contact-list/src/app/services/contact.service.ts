@@ -18,18 +18,21 @@ export class ContactService {
 
   registerContact(contact: ContactInputInterface):Observable<ContactInterface> {
     return this.http.post<ContactInterface>(this.url, contact).pipe(catchError(error => {
-      return throwError(()=> error);
+      this.showError(error.error.msg);
+      return throwError(() => error);
     }))
   }
 
   getContact(contactId: number):Observable<ContactInterface> {
     return this.http.get<ContactInterface>(`${this.url}/${contactId}`).pipe(catchError(error => {
-      return throwError(()=> error);
+      this.showError(error.error.msg);
+      return throwError(() => error);
     }))
   }
 
   deleteContact(contactId: number) {
     return this.http.delete<ContactInterface>(`${this.url}/${contactId}`).pipe(catchError(error => {
+      this.showError(error.error.msg);
       return throwError(()=> error);
     }))
   }
@@ -39,10 +42,12 @@ export class ContactService {
       id: contactId,
       ...contact
     }).pipe(catchError(error => {
+      console.log(error);
+      this.showError(error.error.msg);
       return throwError(()=> error);
     }))
   }
-    showError() {
-    this._snackBar.open("Houve um erro com a sua solicitação.")
+  showError(msg: string) {
+    this._snackBar.open(msg, "OK")
   }
 }

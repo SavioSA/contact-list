@@ -84,14 +84,17 @@ export class ContactFormEditorComponent implements OnInit {
   }
 
   updateContact(result: { validated: boolean }, context: this) {
+    if (result?.validated) {
     const { phone, email, isWhatsapp} = context.contactForm.value
     const data = {
       identifier: (phone ? phone : email) as string,
       isWhatsapp: isWhatsapp as boolean
     }
-    context.contactService.updateContact(context.currentContactId, data).subscribe(res => {
+      context.contactService.updateContact(context.currentContactId, data).subscribe(res => {
+      context._snackBar.open("Contato Atualizado com sucesso.", "OK")
       context.getUser(context.userId);
     })
+    }
   }
 
   editContact(contactId: number) {

@@ -15,9 +15,9 @@ function setErrorValidationMessage(errors: { msg: string } []) {
   let errorMessage = '';
   errors.forEach((error, index) => {
     if (index === errors.length - 1) {
-      errorMessage += ` ${error.msg}`;
+      errorMessage += ` ${error.error.msg}`;
     } else {
-      errorMessage += ` ${error.msg.replace('.', ',')}`;
+      errorMessage += ` ${error.error.msg.replace('.', ',')}`;
     }
   });
   return `There was an error with your request:${errorMessage}`;
