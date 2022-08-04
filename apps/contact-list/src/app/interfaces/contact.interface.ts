@@ -1,7 +1,7 @@
 export default interface ContactInterface {
   id?: number;
   identifier: string;
-  contactTypeId: number;
+  contactTypeId?: number;
   contactTypeName?: string | undefined;
   isWhatsapp: boolean;
   userId?: number;

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
-import UserInterface from 'apps/contact-list/src/app/interfaces/user.interface';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ContactService } from 'apps/contact-list/src/app/services/contact.service';
 import ContactTypeInterface from '../../../../interfaces/contact-type.interface';
 import ContactInterface from '../../../../interfaces/contact.interface';
+import UserInterface from '../../../../interfaces/user.interface';
 import { ContactTypeService } from '../../../../services/contact-type.service';
 import { UserService } from '../../../../services/user.service';
 import { DialogComponent } from "../dialog/dialog.component";
@@ -69,7 +70,9 @@ export class ContactFormEditorComponent implements OnInit {
     public dialog: MatDialog,
     private fb: FormBuilder, private contactTypeService: ContactTypeService,
     private userService: UserService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private contactService: ContactService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -93,25 +96,47 @@ export class ContactFormEditorComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result?.validated) {
-        const contactTypeName = this.contactTypes.find(type => {
-          return type.id === parseInt(this.contactForm.value.type as string)
-        })
-        this.contacts = [
-          {
-            contactTypeName: contactTypeName?.type,
-            contactTypeId: parseInt(this.contactForm.value.type as string),
+      if(result?.validated) {
+        if (this.userId) {
+          this.contactService.registerContact({
             identifier: (this.contactForm.value.email || this.contactForm.value.phone) as string,
-            isWhatsapp: this.contactForm.value.isWhatsapp as boolean
-          },
-          ...this.contacts
-        ]
+            isWhatsapp: this.contactForm.value.isWhatsapp as boolean,
+            contactTypeId: parseInt(this.contactForm.value.type as string),
+            userId: this.userId
+          }).subscribe((res) => {
+            console.log(res);
+          })
+        }
+        const contactTypeName = this.contactTypes.find(type => {
+            return type.id === parseInt(this.contactForm.value.type as string)
+          })
+          this.contacts = [
+            {
+              contactTypeName: contactTypeName?.type,
+              contactTypeId: parseInt(this.contactForm.value.type as string),
+              identifier: (this.contactForm.value.email || this.contactForm.value.phone) as string,
+              isWhatsapp: this.contactForm.value.isWhatsapp as boolean
+            },
+            ...this.contacts
+          ]
       }
     });
   }
   getContactTypes() {
     this.contactTypeService.getAll().subscribe(res => {
       this.contactTypes = res;
+      if (this.userId) {
+        this.contacts = this.contacts.map((contact) => {
+          const contactTypeName = this.contactTypes.find(type => {
+            return type.id === contact.contactTypeId
+          })
+          return {
+            contactTypeName: contactTypeName?.type,
+            identifier: contact.identifier,
+            isWhatsapp: contact.isWhatsapp,
+          }
+        })
+      }
     })
   }
   saveUser() {
@@ -149,7 +174,7 @@ export class ContactFormEditorComponent implements OnInit {
       surname: user.surname,
       contacts: this.contacts
     }).subscribe((res) => {
-      console.log(res);
+      this.router.navigate([`/user/edit/${res.id}`])
     })
   }
 }

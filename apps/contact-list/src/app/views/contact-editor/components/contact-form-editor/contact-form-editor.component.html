@@ -42,18 +42,18 @@
 
         <ng-container matColumnDef="whatsapp">
           <th mat-header-cell *matHeaderCellDef> Whatsapp </th>
-          <td mat-cell *matCellDef="let element">{{element.whatsapp ? "Sim": "Não"}}</td>
+          <td mat-cell *matCellDef="let element">{{element.isWhatsapp ? "Sim": "Não"}}</td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="['identifier', 'type', 'whatsapp']"></tr>
         <tr mat-row *matRowDef="let row; columns: ['identifier', 'type', 'whatsapp'];"></tr>
       </table>
-      <button mat-raised-button (click)="openDialog()">Adicionar</button>
+      <button mat-raised-button type="button" (click)="openDialog()">Adicionar</button>
 
     </mat-expansion-panel>
   </mat-accordion>
   <div class="buttons-container">
-    <button mat-raised-button>Cancelar</button>
+    <button mat-raised-button type="button">Cancelar</button>
     <button [disabled]="!userForm.valid || contacts.length <= 0"
     type='submit'
      mat-raised-button class="register-button">Cadastrar</button>
