@@ -193,4 +193,8 @@ export class ContactFormEditorComponent implements OnInit {
       ...this.contacts
     ]
   }
+
+  goBackToList() {
+    this.router.navigate(['/list'])
+  }
 }

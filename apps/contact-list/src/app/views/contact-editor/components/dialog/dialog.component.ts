@@ -15,7 +15,9 @@ export class DialogComponent {
   ngOnInit(): void {
   }
 
-  onNoClick(): void {
+  clearFields() {
+    this.data.formData.controls['phone'].setValue('')
+    this.data.formData.controls['email'].setValue('')
   }
 
   isNumber(evt: any) {

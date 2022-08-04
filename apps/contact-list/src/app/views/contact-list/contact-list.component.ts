@@ -41,11 +41,6 @@ export class ContactListComponent implements OnInit {
     this.router.navigate([`user/edit/${userId}`])
   }
   deleteUser(userId: number) {
-    try {
-
-    } catch (error) {
-
-    }
     this.userService.deleteUser(userId).subscribe(res => {
       console.log(res);
       this._snackBar.open("Usuário excluído com sucesso.", "Ok");

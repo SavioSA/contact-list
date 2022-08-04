@@ -59,7 +59,7 @@
     </mat-expansion-panel>
   </mat-accordion>
   <div class="buttons-container">
-    <button mat-raised-button type="button">Cancelar</button>
+    <button mat-raised-button type="button" (click)="goBackToList()">Cancelar</button>
     <button [disabled]="!userForm.valid || contacts.length <= 0"
     type='submit'
      mat-raised-button class="register-button">Cadastrar</button>
