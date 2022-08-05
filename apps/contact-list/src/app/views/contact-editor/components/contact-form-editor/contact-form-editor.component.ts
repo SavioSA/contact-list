@@ -21,7 +21,7 @@ export class ContactFormEditorComponent implements OnInit {
   contacts: any = [];
   currentContactId!: number;
   contactTypes: ContactTypeInterface[] = [];
-  userId!: number;
+  userId!: number | undefined;
   userForm = this.fb.group({
     name: [
       '',
@@ -66,11 +66,11 @@ export class ContactFormEditorComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private fb: FormBuilder,
-    private contactTypeService: ContactTypeService,
-    private userService: UserService,
-    private activatedRoute: ActivatedRoute,
-    private contactService: ContactService,
-    private router: Router,
+    public contactTypeService: ContactTypeService,
+    public userService: UserService,
+    public activatedRoute: ActivatedRoute,
+    public contactService: ContactService,
+    public router: Router,
     private _snackBar: MatSnackBar
   ) {}
 
@@ -78,8 +78,7 @@ export class ContactFormEditorComponent implements OnInit {
     this.activatedRoute.params.subscribe((params) => {
       if (params['id']) {
         this.userId = params['id'];
-        this.getUser(this.userId);
-        console.log(this.userForm.controls.name.value);
+        this.getUser(this.userId as number);
         if (this.userForm.controls.name.value !== '') {
           this.router.navigate([`/list`]);
         }
@@ -99,7 +98,7 @@ export class ContactFormEditorComponent implements OnInit {
         .updateContact(context.currentContactId, data)
         .subscribe((res) => {
           context._snackBar.open('Contato Atualizado com sucesso.', 'OK');
-          context.getUser(context.userId);
+          context.getUser(context.userId as number);
         });
     }
   }
@@ -127,7 +126,7 @@ export class ContactFormEditorComponent implements OnInit {
 
   createContact(result: { validated: boolean }, context: this) {
     if (result?.validated) {
-      if (context.userId) {
+      if (context?.userId) {
         context.setContacts();
       } else {
         context.setContactsWithoutSend();
@@ -207,7 +206,9 @@ export class ContactFormEditorComponent implements OnInit {
         name: user.name,
         surname: user.surname,
       })
-      .pipe();
+      .subscribe(() => {
+        this._snackBar.open('Usuário editado com sucesso.', 'Ok');
+      });
   }
   registerUser(user: UserInterface) {
     this.userService
@@ -222,7 +223,7 @@ export class ContactFormEditorComponent implements OnInit {
       });
   }
 
-  deleteContact(contactInfo: { id: number; identifier: string }) {
+  deleteContact(contactInfo: { id: number | undefined; identifier: string }) {
     if (contactInfo?.id) {
       this.contactService.deleteContact(contactInfo.id).subscribe(() => {
         this.contacts = this.contacts.filter((contact: ContactInterface) => {
