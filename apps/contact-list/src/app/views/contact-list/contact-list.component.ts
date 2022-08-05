@@ -14,9 +14,9 @@ import { UserService } from '../../services/user.service';
 })
 export class ContactListComponent implements OnInit {
   constructor(
-    private userService: UserService,
-    private router: Router,
-    private _snackBar: MatSnackBar,
+    public userService: UserService,
+    public router: Router,
+    public _snackBar: MatSnackBar,
     public dialog: MatDialog
   ) {}
 
