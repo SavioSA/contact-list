@@ -18,7 +18,6 @@ export class ContactListComponent implements OnInit {
     private router: Router,
     private _snackBar: MatSnackBar,
     public dialog: MatDialog
-
   ) {}
 
   users: UserInterface[] = [];
@@ -43,7 +42,7 @@ export class ContactListComponent implements OnInit {
       });
   }
   goToUser(userId: number) {
-    this.router.navigate([`user/edit/${userId}`]);
+    this.router.navigate([`user/${userId}`]);
   }
   deleteUser(userId: number) {
     this.userService.deleteUser(userId).subscribe((res) => {
@@ -52,13 +51,17 @@ export class ContactListComponent implements OnInit {
       this.ngOnInit();
     });
   }
-  openDeleteDialog(userInformations: {id: number, name: string, surname: string}) {
-  const dialogRef = this.dialog.open(DialogConfirmationComponent, {
+  openDeleteDialog(userInformations: {
+    id: number;
+    name: string;
+    surname: string;
+  }) {
+    const dialogRef = this.dialog.open(DialogConfirmationComponent, {
       width: '16rem',
       height: '184px',
       data: {
-          message:`Deseja realmente exluir o usuário ${userInformations.name} ${userInformations.surname}?`
-        }
+        message: `Deseja realmente excluir o usuário ${userInformations.name} ${userInformations.surname}?`,
+      },
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result.response) {

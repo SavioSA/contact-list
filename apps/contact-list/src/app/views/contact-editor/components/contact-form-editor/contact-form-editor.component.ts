@@ -218,7 +218,7 @@ export class ContactFormEditorComponent implements OnInit {
       })
       .subscribe((res) => {
         this._snackBar.open('Usuário registrado com sucesso.', 'Ok');
-        this.router.navigate([`/user/edit/${res.id}`]);
+        this.router.navigate([`/user/${res.id}`]);
       });
   }
 

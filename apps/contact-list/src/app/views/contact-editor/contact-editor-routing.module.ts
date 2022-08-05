@@ -8,7 +8,7 @@ const routes: Routes = [
     component: ContactFormEditorComponent,
   },
   {
-    path: 'edit/:id',
+    path: ':id',
     component: ContactFormEditorComponent,
   },
   {
