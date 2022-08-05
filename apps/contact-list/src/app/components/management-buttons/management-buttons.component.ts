@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./management-buttons.component.scss'],
 })
 export class ManagementButtonsComponent implements OnInit {
-  constructor(private router: Router) {}
+  constructor(public router: Router) {}
   ngOnInit(): void {}
 
   goToNewContact() {
