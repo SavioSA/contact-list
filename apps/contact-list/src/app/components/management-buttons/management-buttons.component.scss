@@ -1,9 +1,27 @@
 section.management-buttons{
-  width: 70%;
-  display: flex;
+  flex-direction: column;
+  width: 100%;
   justify-content: space-around;
+  align-items: center;
+  display: flex;
+  button{
+    margin-bottom: 1rem;
+    width: 70%;
+  }
+  mat-card{
+    width: 100%;
+  }
+
   .new-contact-button{
     background-color: #06ac06;
     color: #fff;
+  }
+  @media(min-width: 28.75rem){
+    width: 70%;
+    flex-direction: row;
+    button{
+      margin-bottom: none;
+      width:auto;
+    }
   }
 }

@@ -1,8 +1,11 @@
 mat-card{
-  width: 60%;
+  width: 90%;
   display: flex;
   align-items: center;
   flex-direction: column;
+  @media(min-width: 28.75rem){
+    width: 70%;
+  }
 }
 
 form{
@@ -11,7 +14,14 @@ form{
 .form-container-row{
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
+    @media(min-width: 28.75rem){
+      flex-direction: row;
+      mat-form-field{
+        width: 35%;
+      }
+    }
 }
 
 .whatsapp-check-container{
@@ -19,6 +29,11 @@ form{
   display: flex;
   padding-right: 10%;
   justify-content: flex-end;
+}
+
+.whatsapp-logo{
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .buttons-container{

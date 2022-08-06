@@ -14,7 +14,10 @@ section.main{
   mat-card{
     display: flex;
     justify-content: center;
-    width: 60%;
+    width: 90%;
+    @media(min-width: 28.75rem){
+      width: 70%;
+    }
   }
   h3{
   color:#81a1b3;

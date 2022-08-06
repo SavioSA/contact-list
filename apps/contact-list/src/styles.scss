@@ -13,3 +13,18 @@ contact-list-contact-list, contact-list-contact-form-editor{
 body{
   background-color: #81a1b3;
 }
+
+div.mat-expansion-panel-body {
+  padding: 0;
+  @media(min-width: 28.75rem){
+    padding: 0 24px 16px;
+
+  }
+}
+
+td{
+  max-width: 4rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
