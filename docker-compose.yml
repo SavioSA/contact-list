@@ -33,6 +33,9 @@ services:
 
   api:
     command: sh -c "yarn run migration:up-docker && yarn run start api --host 0.0.0.0"
+    depends_on:
+      mysql:
+        condition: service_completed_successfully
     build:
       context: .
       dockerfile: ./docker/api.dockerfile
