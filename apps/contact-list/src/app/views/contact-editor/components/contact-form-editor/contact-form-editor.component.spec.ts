@@ -2,8 +2,9 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, Validators } from '@angular/forms';
 import {
+  MAT_DIALOG_DATA,
   MatDialog,
-  MatDialogRef, MAT_DIALOG_DATA
+  MatDialogRef,
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';

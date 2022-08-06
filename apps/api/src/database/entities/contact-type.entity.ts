@@ -1,5 +1,5 @@
 import {
-  Column, Entity, OneToMany, PrimaryGeneratedColumn
+  Column, Entity, OneToMany, PrimaryGeneratedColumn,
 } from 'typeorm';
 import Contact from './contact.entity';
 

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError, Observable, throwError } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import ContactInputInterface from '../interfaces/contact-input.interface';
 import ContactInterface from '../interfaces/contact.interface';
 import MessageInterface from '../interfaces/message.interface';

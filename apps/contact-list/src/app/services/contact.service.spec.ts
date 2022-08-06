@@ -1,6 +1,6 @@
 import {
   HttpClientTestingModule,
-  HttpTestingController
+  HttpTestingController,
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { MatSnackBar } from '@angular/material/snack-bar';
