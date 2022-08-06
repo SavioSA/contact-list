@@ -1,5 +1,5 @@
 <section class="contact-list">
-  <div class="table-container">
+  <div class="table-container" *ngIf="users.length">
     <table mat-table [dataSource]="users" class="mat-elevation-z8 ">
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Nome </th>
@@ -23,8 +23,12 @@
       <tr mat-row *matRowDef="let row; columns: ['name', 'actions'];"></tr>
     </table>
   </div>
-<mat-paginator [length]="totalItems"
+<mat-paginator *ngIf="users.length" [length]="totalItems"
               [pageSize]="8"
               (page)="changeIndex($event)">
 </mat-paginator>
+<section class="empty-list">
+  <h2>Você ainda não tem nenhum contato. clique no botão verde para adicionar.</h2>
+<mat-icon>sentiment_very_dissatisfied</mat-icon>
+</section>
 </section>
