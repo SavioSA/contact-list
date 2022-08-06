@@ -33,7 +33,7 @@ services:
       - "4200:4200"
 
   api:
-    command: sh -c "yarn checkDb && yarn start api --host 0.0.0.0 && yarn migration:up-docker"
+    command: sh -c "yarn checkDb  && yarn migration:up-docker && yarn start api --host 0.0.0.0"
     depends_on:
      - mysql
     build:

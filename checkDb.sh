@@ -11,7 +11,7 @@ mkdir /run/mysqld
 mysql_install_db
 
 echo "Waiting for database..."
-while !(mysql -u$MYSQL_USER --port=$MYSQL_PORT --protocol=TCP -h 172.27.0.3 -p$MYSQL_PASSWORD -e"use $MYSQL_DATABASE;")
+while !(mysql -u$MYSQL_USER --port=$MYSQL_PORT --protocol=TCP -h $MYSQL_HOST -p$MYSQL_PASSWORD -e"use $MYSQL_DATABASE;")
 do
 echo "Waiting for database..."
 sleep 10
