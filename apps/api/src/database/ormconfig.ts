@@ -16,7 +16,7 @@ export default function getConfig(host = process.env.MYSQL_MIGRATION_HOST) {
     synchronize: false,
     name: 'default',
     entities: [resolve(`${join(__dirname)}/entities/*.js`)],
-    migrations: [join(__dirname, '../../../../dist/apps/api/src/database/migrations/**')],
+    migrations: host === process.env.MYSQL_MIGRATION_HOST ? [join(__dirname, '../../../../dist/apps/api/src/database/migrations/**')] : [resolve(`${join(__dirname)}/migration/*.js`)],
     subscribers: ['dist/src/database/subscriber/**'],
   } as DataSourceOptions;
 }
