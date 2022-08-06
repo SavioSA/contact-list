@@ -27,7 +27,7 @@ function validatedContactBusinessRules(contact: ContactInputInterface | ContactI
   const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
   if (
     (
-      (contact as ContactInputInterface)?.contactTypeId === 1
+      (contact as ContactInputInterface)?.contactType === 1
       || (contact as ContactInterface)?.contactType?.id === 1
     )
     && emailRegex.test(contact.identifier)
@@ -37,7 +37,7 @@ function validatedContactBusinessRules(contact: ContactInputInterface | ContactI
     };
   }
   if ((
-    (contact as ContactInputInterface)?.contactTypeId === 2
+    (contact as ContactInputInterface)?.contactType === 2
     || (contact as ContactInterface)?.contactType?.id === 2
   )
      && parseInt(contact.identifier, 10)) {
@@ -46,7 +46,7 @@ function validatedContactBusinessRules(contact: ContactInputInterface | ContactI
     };
   }
   if ((
-    (contact as ContactInputInterface)?.contactTypeId === 2
+    (contact as ContactInputInterface)?.contactType === 2
     || (contact as ContactInterface)?.contactType?.id === 2
   )
      && contact.isWhatsapp) {
@@ -84,7 +84,7 @@ router.post<unknown, ContactInterface | MessageInterface, ContactInputInterface,
         const newContact = new Contact();
         newContact.identifier = contact.identifier;
         newContact.isWhatsapp = contact.isWhatsapp;
-        newContact.contactType = contact.contactTypeId;
+        newContact.contactType = contact.contactType;
         const isNotValid = validatedContactBusinessRules(contact);
         if (isNotValid) {
           res.status(403).json(isNotValid);
