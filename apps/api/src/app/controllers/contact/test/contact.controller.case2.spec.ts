@@ -59,37 +59,37 @@ describe('/api/v1/contact/', () => {
     userId: 1,
     isWhatsapp: true,
   };
-  test('It should GET specific user', async () => {
+  test('It should GET specific contact', async () => {
     const response = await request(app).get('/api/v1/contact/1');
     expect(response.statusCode).toBe(200);
   });
 
-  test('It should GET many users', async () => {
+  test('It should GET many contacts', async () => {
     const response = await request(app).get('/api/v1/contact?offset=0&page=0');
     expect(response.statusCode).toBe(200);
   });
 
-  test('It should POST existing user', async () => {
+  test('It should POST existing contact', async () => {
     const response = await request(app).post('/api/v1/contact').send(contactInput);
     expect(response.statusCode).toBe(409);
   });
 
-  test('It should POST user with body error', async () => {
+  test('It should POST contact with body error', async () => {
     const response = await request(app).post('/api/v1/contact').send();
     expect(response.statusCode).toBe(403);
   });
 
-  test('It should PUT user', async () => {
+  test('It should PUT contact', async () => {
     const response = await request(app).put('/api/v1/contact').send(contactInput);
     expect(response.statusCode).toBe(200);
   });
 
-  test('It should PUT user with body error', async () => {
+  test('It should PUT contact with body error', async () => {
     const response = await request(app).put('/api/v1/contact').send();
     expect(response.statusCode).toBe(403);
   });
 
-  test('It should DELETE user', async () => {
+  test('It should DELETE contact', async () => {
     const response = await request(app).delete('/api/v1/contact/1').send();
     expect(response.statusCode).toBe(200);
   });
