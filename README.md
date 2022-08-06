@@ -1,6 +1,9 @@
 # How to setup
 
-To setup this project you just have to clone and run "docker-compose up --build" in the root directory.
+To setup this project you just have:
+1. To clone this repository.
+2. To use .enx.example as .env.
+3. To run "docker-compose up --build" in the root directory.
 
 # ContactList
 
