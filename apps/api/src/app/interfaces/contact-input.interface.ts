@@ -1,7 +1,7 @@
 interface ContactInputInterface {
   id?: number;
   identifier: string;
-  contactTypeId: number;
+  contactType: number;
   isWhatsapp: boolean;
   userId: number;
 }

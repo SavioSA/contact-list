@@ -9,6 +9,6 @@ function connect(host: string | undefined): DataSource {
   return datasource;
 }
 
-export const dbConnection = connect(process.env.MYSQL_HOST);
+const dbConnection = connect(process.env.MYSQL_HOST);
 
 export default dbConnection;

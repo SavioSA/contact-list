@@ -1,5 +1,5 @@
 import {
-  Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn,
+  Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn
 } from 'typeorm';
 import ContactType from './contact-type.entity';
 import User from './user.entity';

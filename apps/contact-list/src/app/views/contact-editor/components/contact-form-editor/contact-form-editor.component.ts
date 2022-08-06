@@ -245,7 +245,7 @@ export class ContactFormEditorComponent implements OnInit {
     this.contacts = [
       {
         contactTypeName: contactType?.type,
-        contactTypeId: this.contactForm.value.type,
+        contactType: this.contactForm.value.type,
         identifier: (this.contactForm.value.email ||
           this.contactForm.value.phone) as string,
         isWhatsapp: this.contactForm.value.isWhatsapp as boolean,
@@ -261,7 +261,7 @@ export class ContactFormEditorComponent implements OnInit {
         identifier: (this.contactForm.value.email ||
           this.contactForm.value.phone) as string,
         isWhatsapp: this.contactForm.value.isWhatsapp as boolean,
-        contactTypeId: this.contactForm.value.type as number,
+        contactType: this.contactForm.value.type as number,
         userId: this.userId,
       })
       .subscribe((res) => {

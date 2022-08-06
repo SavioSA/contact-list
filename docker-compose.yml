@@ -32,7 +32,7 @@ services:
       - "4200:4200"
 
   api:
-    command: "yarn run start api --host 0.0.0.0"
+    command: sh -c "yarn run migration:up-docker && yarn run start api --host 0.0.0.0"
     build:
       context: .
       dockerfile: ./docker/api.dockerfile
