@@ -1,6 +1,7 @@
 version: "3.9"
 services:
   mysql:
+    hostname: mysql
     image: mysql:5.7
     healthcheck:
       test:
@@ -32,16 +33,16 @@ services:
       - "4200:4200"
 
   api:
-    command: sh -c "yarn run migration:up-docker && yarn run start api --host 0.0.0.0"
+    command: sh -c "yarn checkDb && yarn start api --host 0.0.0.0 && yarn migration:up-docker"
     depends_on:
-      mysql:
-        condition: service_completed_successfully
+     - mysql
     build:
       context: .
       dockerfile: ./docker/api.dockerfile
     volumes:
       - ./apps/api:/app/apps/api
       - ./dist:/app/dist/
+      - ./checkDb.sh:/app/checkDb.sh
     env_file:
       - .env
     ports:

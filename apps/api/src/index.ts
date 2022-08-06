@@ -8,6 +8,7 @@ import dbConnection from './database/dbConnection';
 const app = express();
 app.use(cors());
 app.use(express.json());
+
 dbConnection.initialize().then(() => {
   console.log('Database connected.');
 }).catch((error) => {

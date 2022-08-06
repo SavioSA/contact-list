@@ -8,6 +8,7 @@
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
+    "checkDb":"ash checkDb.sh",
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:generate": "./node_modules/.bin/ts-node ./node_modules/.bin/typeorm migration:generate -d src/database/migrationConnection.ts",
     "migration:up": "./node_modules/.bin/ts-node ./node_modules/.bin/typeorm migration:run -d apps/api/src/database/migrationConnection.ts",
