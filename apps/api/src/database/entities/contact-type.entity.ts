@@ -3,9 +3,7 @@ import {
 } from 'typeorm';
 import Contact from './contact.entity';
 
-@Entity({
-
-})
+@Entity()
 export default class ContactType {
     @PrimaryGeneratedColumn()
       id: number;

@@ -23,19 +23,33 @@ function setErrorValidationMessage(errors: { msg: string } []) {
   return `There was an error with your request:${errorMessage}`;
 }
 
-function validatedContactBusinessRules(contact: ContactInputInterface) {
+function validatedContactBusinessRules(contact: ContactInputInterface | ContactInterface) {
   const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-  if (contact.contactTypeId === 1 && emailRegex.test(contact.identifier)) {
+  if (
+    (
+      (contact as ContactInputInterface)?.contactTypeId === 1
+      || (contact as ContactInterface)?.contactType?.id === 1
+    )
+    && emailRegex.test(contact.identifier)
+  ) {
     return {
       msg: 'You tried to register an email as a phone.',
     };
   }
-  if (contact.contactTypeId === 2 && parseInt(contact.identifier, 10)) {
+  if ((
+    (contact as ContactInputInterface)?.contactTypeId === 2
+    || (contact as ContactInterface)?.contactType?.id === 2
+  )
+     && parseInt(contact.identifier, 10)) {
     return {
       msg: 'You tried to register a phone as an email.',
     };
   }
-  if (contact.contactTypeId === 2 && contact.isWhatsapp) {
+  if ((
+    (contact as ContactInputInterface)?.contactTypeId === 2
+    || (contact as ContactInterface)?.contactType?.id === 2
+  )
+     && contact.isWhatsapp) {
     return {
       msg: 'Whatsapp is allowed only to phone contacts.',
     };
@@ -54,6 +68,7 @@ router.post<unknown, ContactInterface | MessageInterface, ContactInputInterface,
     try {
       const errors = validationResult(req);
       const contact = req.body;
+
       if (errors.isEmpty()) {
         const contactAlreadyExist = await contactRepository.findOne({
           where: {
@@ -84,7 +99,6 @@ router.post<unknown, ContactInterface | MessageInterface, ContactInputInterface,
           },
           relations: ['contactType'],
         });
-        console.log(result);
         res.json(result as ContactInterface);
       } else {
         const errorMessage = setErrorValidationMessage(errors.array());
@@ -121,7 +135,9 @@ router.put<unknown, MessageInterface, ContactInputInterface, unknown>(
         } else {
           contact.identifier = identifier || contact.identifier;
           contact.isWhatsapp = isWhatsapp || contact.isWhatsapp;
-          const isNotValid = validatedContactBusinessRules(contact as ContactInputInterface);
+          console.log(contact);
+
+          const isNotValid = validatedContactBusinessRules(contact as ContactInterface);
           if (isNotValid) {
             res.status(403).json(isNotValid);
             return;
