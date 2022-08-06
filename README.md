@@ -1,4 +1,6 @@
+# How to setup
 
+To setup this project you just have to clone and run "docker-compose up --build" in the root directory.
 
 # ContactList
 
