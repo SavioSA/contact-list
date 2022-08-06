@@ -104,24 +104,26 @@ export class ContactFormEditorComponent implements OnInit {
   }
 
   editContact(contactId: number) {
-    this.currentContactId = contactId;
-    this.contactService.getContact(contactId).subscribe((res) => {
-      const { identifier, isWhatsapp, contactType } = res;
-      this.contactForm.controls.isWhatsapp.setValue(isWhatsapp);
-      this.contactForm.controls.type.setValue(contactType?.id);
-      this.contactForm.controls.phone.setValue(
-        contactType?.id === 1 ? identifier : null
-      );
-      this.contactForm.controls.email.setValue(
-        contactType?.id === 2 ? identifier : null
-      );
-      const data = {
-        formData: this.contactForm,
-        contactTypes: this.contactTypes,
-        userId: this.userId,
-      };
-      this.openDialog(data, this.updateContact);
-    });
+    if (contactId) {
+      this.currentContactId = contactId;
+      this.contactService.getContact(contactId).subscribe((res) => {
+        const { identifier, isWhatsapp, contactType } = res;
+        this.contactForm.controls.isWhatsapp.setValue(isWhatsapp);
+        this.contactForm.controls.type.setValue(contactType?.id);
+        this.contactForm.controls.phone.setValue(
+          contactType?.id === 1 ? identifier : null
+        );
+        this.contactForm.controls.email.setValue(
+          contactType?.id === 2 ? identifier : null
+        );
+        const data = {
+          formData: this.contactForm,
+          contactTypes: this.contactTypes,
+          userId: this.userId,
+        };
+        this.openDialog(data, this.updateContact);
+      });
+    }
   }
 
   createContact(result: { validated: boolean }, context: this) {
