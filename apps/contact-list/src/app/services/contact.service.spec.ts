@@ -1,6 +1,6 @@
 import {
   HttpClientTestingModule,
-  HttpTestingController,
+  HttpTestingController
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -17,7 +17,7 @@ describe('ContactService', () => {
     id: 1,
     identifier: '999999999',
     isWhatsapp: true,
-    contactTypeId: 1,
+    contactType: 1,
   };
   const contact: ContactInterface = {
     id: 1,

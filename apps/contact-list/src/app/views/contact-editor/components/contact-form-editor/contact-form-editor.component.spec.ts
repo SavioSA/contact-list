@@ -2,9 +2,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, Validators } from '@angular/forms';
 import {
-  MAT_DIALOG_DATA,
   MatDialog,
-  MatDialogRef,
+  MatDialogRef, MAT_DIALOG_DATA
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
@@ -395,7 +394,7 @@ describe('ContactFormEditorComponent', () => {
     expect(component.contacts).toEqual([
       {
         contactTypeName: 'email',
-        contactTypeId: 2,
+        contactType: 2,
         identifier: 'teste@teste.com',
         isWhatsapp: false,
       },
@@ -417,7 +416,7 @@ describe('ContactFormEditorComponent', () => {
     expect(component.contacts).toEqual([
       {
         contactTypeName: 'phone',
-        contactTypeId: 1,
+        contactType: 1,
         identifier: 'teste@teste.com',
         isWhatsapp: false,
       },
