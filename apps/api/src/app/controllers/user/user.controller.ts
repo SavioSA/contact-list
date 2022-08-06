@@ -101,10 +101,12 @@ router.post<unknown, UserInterface | MessageInterface, UserInterface, unknown>(
           },
         });
         res.status(200).json(result as UserInterface);
-      } else {
-        const errorMessage = setErrorValidationMessage(errors.array());
-        res.status(403).json({ msg: errorMessage });
+        return;
       }
+      const errorMessage = setErrorValidationMessage(errors.array());
+
+      res.status(403).json({ msg: errorMessage });
+      return;
     } catch (error) {
       console.error(error);
       res.status(500).json({ msg: `There was an error with your request: ${error}` });

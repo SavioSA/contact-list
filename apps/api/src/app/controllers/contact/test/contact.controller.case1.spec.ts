@@ -71,7 +71,7 @@ describe('/api/v1/contact/', () => {
     expect(response.statusCode).toBe(200);
   });
 
-  test('It should POST contact with body business rule error: phone as email', async () => {
+  test('It should POST contact with business rule error: phone as email', async () => {
     const response = await request(app).post('/api/v1/contact').send({
       id: 1,
       identifier: '11111111111',
@@ -82,7 +82,7 @@ describe('/api/v1/contact/', () => {
     expect(response.statusCode).toBe(403);
   });
 
-  test('It should POST contact with body business rule error: email is Whatsapp', async () => {
+  test('It should POST contact with business rule error: email is Whatsapp', async () => {
     const response = await request(app).post('/api/v1/contact').send({
       id: 1,
       identifier: 'teste@teste.com',
@@ -93,7 +93,7 @@ describe('/api/v1/contact/', () => {
     expect(response.statusCode).toBe(403);
   });
 
-  test('It should POST contact with body business rule error: email as phone', async () => {
+  test('It should POST contact with business rule error: email as phone', async () => {
     const response = await request(app).post('/api/v1/contact').send({
       id: 1,
       identifier: 'teste@teste.com',
