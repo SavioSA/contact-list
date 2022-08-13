@@ -38,8 +38,6 @@ router.post<unknown, UserInterface | MessageInterface, UserInterface, unknown>(
   ], 'Verify your contacts, at least one is invalid.'),
   async (req, res) => {
     try {
-      console.log(req.body);
-
       const errors = validationResult(req);
       if (errors.isEmpty()) {
         const { name, surname, contacts: receivedContacts } = req.body;
